@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YOKA - ค้นพบความสงบและความแข็งแกร่งในตัวคุณ | โรงเรียนสอนโยคะระดับพรีเมียม</title>
+  
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="สัมผัสประสบการณ์การฝึกโยคะระดับพรีเมียม เรียนรู้ทักษะโยคะจากครูผู้เชี่ยวชาญ ค้นหาสไตล์โยคะที่เหมาะกับคุณด้วย Yoga Quiz และฝึกฝนท่าเบื้องต้นผ่าน Alignment Guide แบบอินเตอร์แอคทีฟ">
+  <meta name="keywords" content="โยคะ, เรียนโยคะ, โยคะพรีเมียม, Hatha, Vinyasa, Yin, Ashtanga, วิธีฝึกโยคะ, ลดความเครียด, ออฟฟิศซินโดรม, สุขภาพ">
+  
+  <!-- Preload Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome for Premium Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- FOUC Prevention Script for Theme Caching (as per guidelines) -->
+  <meta name="color-scheme" content="light dark">
+  <script>
+    {
+      const colorScheme = localStorage.getItem("color-scheme");
+      if (colorScheme) {
+        document.querySelector('meta[name="color-scheme"]').content = colorScheme;
+      }
+    }
+  </script>
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Header & Navigation -->
+  <header class="main-header">
+    <div class="container nav-container">
+      <a href="#" class="logo-area" id="nav-logo">
+        <img src="images/logo.png" alt="YOKA Logo" class="logo-img">
+        <span class="logo-text">YOKA</span>
+      </a>
+      
+      <nav class="nav-links" id="main-nav">
+        <a href="#benefits">ประโยชน์</a>
+        <a href="#types">ประเภทโยคะ</a>
+        <a href="#tutorial">สอนฝึกท่าพื้นฐาน</a>
+        <a href="#membership">สมาชิก</a>
+        <a href="#instructors">ผู้สอน</a>
+        <a href="#faq">คำถามพบบ่อย</a>
+      </nav>
+
+      <div class="nav-actions">
+        <!-- Theme Toggle -->
+        <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle Theme">
+          <i class="fa-solid fa-moon"></i>
+        </button>
+        <!-- Quiz CTA -->
+        <button class="btn btn-outline quiz-trigger" id="header-quiz-btn">Yoga Quiz</button>
+        <!-- Mobile Menu Toggle -->
+        <button class="mobile-menu-btn" id="mobile-toggle" aria-label="Toggle Mobile Menu">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero-section" id="hero">
+    <div class="hero-bg-overlay"></div>
+    <div class="hero-bg-media">
+      <img src="images/hero_yoga.png" alt="Advanced Yoga Pose Mayurasana" class="hero-img">
+    </div>
+    
+    <div class="container hero-container">
+      <div class="hero-content-box">
+        <span class="hero-badge"><i class="fa-solid fa-sparkles"></i> สตูดิโอโยคะระดับพรีเมียม</span>
+        <h1 class="hero-title">ค้นพบความสงบ<br>และความแข็งแกร่งในตัวคุณ</h1>
+        <p class="hero-subtitle">"ท่ายากในวันนี้ คือท่าปกติของคุณ in วันหน้า" เริ่มต้นเส้นทางโยคะที่ตอบโจทย์สรีระและเป้าหมายของคุณด้วยประสบการณ์ที่เหนือระดับ</p>
+        <div class="hero-ctas">
+          <a href="#membership" class="btn btn-primary btn-large">เริ่มฝึกเลยวันนี้</a>
+          <button class="btn btn-secondary btn-large quiz-trigger">ทำแบบทดสอบโยคะ</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scroll Indicator -->
+    <a href="#benefits" class="scroll-indicator" aria-label="Scroll Down">
+      <span class="scroll-mouse">
+        <span class="scroll-wheel"></span>
+      </span>
+      <span class="scroll-arrow"></span>
+    </a>
+  </section>
+
+  <!-- Benefits Section -->
+  <section class="benefits-section" id="benefits">
+    <div class="container">
+      <div class="section-header">
+        <span class="sub-title">Why Yoga?</span>
+        <h2>ทำไมต้องฝึกโยคะ?</h2>
+        <p class="section-desc">โยคะไม่ใช่แค่การออกกำลังกาย แต่คือศาสตร์แห่งการปรับสมดุลกายและใจ ฝึกโยคะเพียง 15 นาทีต่อวัน ช่วยลดฮอร์โมนความเครียด (Cortisol) ได้อย่างมีนัยสำคัญ</p>
+      </div>
+
+      <div class="benefits-grid">
+        <!-- Benefit 1 -->
+        <div class="benefit-card card-physical">
+          <div class="benefit-image-wrapper">
+            <img src="images/benefit_physical.png" alt="Physical benefits of yoga" class="benefit-card-img">
+          </div>
+          <div class="benefit-info">
+            <div class="benefit-icon-box"><i class="fa-solid fa-dumbbell"></i></div>
+            <h3>Physical (ร่างกาย)</h3>
+            <p>เพิ่มความยืดหยุ่น สร้างความแข็งแกร่งให้แกนกลางลำตัว และจัดปรับสรีระของกล้ามเนื้อให้สมมาตร</p>
+          </div>
+        </div>
+
+        <!-- Benefit 2 -->
+        <div class="benefit-card card-mental">
+          <div class="benefit-image-wrapper">
+            <img src="images/benefit_mental.png" alt="Mental benefits of yoga" class="benefit-card-img">
+          </div>
+          <div class="benefit-info">
+            <div class="benefit-icon-box"><i class="fa-solid fa-brain"></i></div>
+            <h3>Mental (จิตใจ)</h3>
+            <p>ลดระดับฮอร์โมนความเครียด ฝึกฝนความนิ่งของจิตใจ เพิ่มสมาธิและสติในการดำเนินชีวิตประจำวัน</p>
+          </div>
+        </div>
+
+        <!-- Benefit 3 -->
+        <div class="benefit-card card-spiritual">
+          <div class="benefit-image-wrapper">
+            <img src="images/benefit_spiritual.png" alt="Spiritual benefits of yoga" class="benefit-card-img">
+          </div>
+          <div class="benefit-info">
+            <div class="benefit-icon-box"><i class="fa-solid fa-wind"></i></div>
+            <h3>Spiritual (พลังงาน)</h3>
+            <p>ควบคุมลมหายใจ (Pranayama) กระตุ้นการไหลเวียนของปราณหรือพลังงานชีวิต เพื่อความสงบลึกซึ้ง</p>
+          </div>
+        </div>
+
+        <!-- Benefit 4 -->
+        <div class="benefit-card card-lifestyle">
+          <div class="benefit-image-wrapper">
+            <img src="images/benefit_lifestyle.png" alt="Lifestyle benefits of yoga" class="benefit-card-img">
+          </div>
+          <div class="benefit-info">
+            <div class="benefit-icon-box"><i class="fa-solid fa-house-chimney-user"></i></div>
+            <h3>Lifestyle (การใช้ชีวิต)</h3>
+            <p>ช่วยให้นอนหลับได้ลึกและสบายขึ้น บำบัดและป้องกันอาการปวดเมื่อยจากการทำงาน (Office Syndrome)</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Yoga Types Section -->
+  <section class="types-section" id="types">
+    <div class="container">
+      <div class="section-header">
+        <span class="sub-title">Find Your Style</span>
+        <h2>ค้นพบสไตล์ที่ใช่สำหรับคุณ</h2>
+        <p class="section-desc">เพราะร่างกายและความต้องการของแต่ละคนไม่เหมือนกัน เลือกสไตล์การฝึกที่ตรงกับระดับทักษะและเป้าหมายของคุณ</p>
+      </div>
+
+      <!-- Filters -->
+      <div class="filter-bar">
+        <button class="filter-btn active" data-filter="all">ทั้งหมด</button>
+        <button class="filter-btn" data-filter="gentle">อ่อนโยน/เบื้องต้น</button>
+        <button class="filter-btn" data-filter="dynamic">ไดนามิก/แข็งแกร่ง</button>
+        <button class="filter-btn" data-filter="restorative">เน้นผ่อนคลาย</button>
+      </div>
+
+      <!-- Cards Grid -->
+      <div class="types-grid" id="types-grid">
+        <!-- Hatha Card -->
+        <div class="type-card" data-tags="gentle">
+          <div class="type-img-box">
+            <img src="images/type_hatha.png" alt="Hatha Yoga" class="type-img">
+            <span class="diff-badge badge-1">อ่อนโยน (★☆☆☆☆)</span>
+          </div>
+          <div class="type-details">
+            <h3>Hatha Yoga</h3>
+            <p class="type-desc">เน้นจัดระเบียบสรีระและลมหายใจแบบช้าๆ ค้างแต่ละท่าในระยะที่พอเหมาะ อ่อนโยน ปลอดภัย เหมาะเป็นอย่างยิ่งสำหรับผู้เริ่มต้น</p>
+            <div class="type-meta">
+              <span><i class="fa-regular fa-clock"></i> 60 นาที</span>
+              <span><i class="fa-solid fa-fire-flame-simple"></i> เผาผลาญต่ำ</span>
+            </div>
+            <a href="#membership" class="btn btn-outline btn-full">ทดลองเรียนฟรี</a>
+          </div>
+        </div>
+
+        <!-- Vinyasa Card -->
+        <div class="type-card" data-tags="dynamic">
+          <div class="type-img-box">
+            <img src="images/type_vinyasa.png" alt="Vinyasa Yoga" class="type-img">
+            <span class="diff-badge badge-3">ท้าทายปานกลาง (★★★☆☆)</span>
+          </div>
+          <div class="type-details">
+            <h3>Vinyasa Yoga</h3>
+            <p class="type-desc">ฝึกการเคลื่อนไหวร่างกายที่ประสานสัมพันธ์ไปกับลมหายใจเข้าออกอย่างต่อเนื่อง ได้เหงื่อ ช่วยสร้างความแข็งแกร่งของกล้ามเนื้อและการคาร์ดิโอ</p>
+            <div class="type-meta">
+              <span><i class="fa-regular fa-clock"></i> 75 นาที</span>
+              <span><i class="fa-solid fa-fire-flame-simple animate-pulse"></i> เผาผลาญสูง</span>
+            </div>
+            <a href="#membership" class="btn btn-outline btn-full">จองคลาสเรียน</a>
+          </div>
+        </div>
+
+        <!-- Yin Card -->
+        <div class="type-card" data-tags="restorative gentle">
+          <div class="type-img-box">
+            <img src="images/type_yin.png" alt="Yin Yoga" class="type-img">
+            <span class="diff-badge badge-2">ผ่อนคลาย (★★☆☆☆)</span>
+          </div>
+          <div class="type-details">
+            <h3>Yin Yoga</h3>
+            <p class="type-desc">ค้างท่าเป็นเวลานาน (3-5 นาที) เน้นยืดเหยียดลึกถึงเนื้อเยื่อเกี่ยวพัน ข้อต่อ และพังผืด เหมาะมากสำหรับการคลายเครียดและเพิ่มความยืดหยุ่น</p>
+            <div class="type-meta">
+              <span><i class="fa-regular fa-clock"></i> 60 นาที</span>
+              <span><i class="fa-solid fa-fire-flame-simple"></i> เผาผลาญต่ำมาก</span>
+            </div>
+            <a href="#membership" class="btn btn-outline btn-full">จองคลาสเรียน</a>
+          </div>
+        </div>
+
+        <!-- Ashtanga Card -->
+        <div class="type-card" data-tags="dynamic">
+          <div class="type-img-box">
+            <img src="images/type_ashtanga.png" alt="Ashtanga Yoga" class="type-img">
+            <span class="diff-badge badge-5">ยาก/ท้าทายสูงสุด (★★★★★)</span>
+          </div>
+          <div class="type-details">
+            <h3>Ashtanga Yoga</h3>
+            <p class="type-desc">การฝึกแบบดั้งเดิมที่มีระเบียบแบบแผนและลำดับท่าที่ตายตัว มีความรวดเร็วและต่อเนื่องสูง เหมาะสำหรับผู้ฝึกที่ต้องการความท้าทายทางร่างกายขั้นสุด</p>
+            <div class="type-meta">
+              <span><i class="fa-regular fa-clock"></i> 90 นาที</span>
+              <span><i class="fa-solid fa-fire-flame-simple animate-pulse"></i> เผาผลาญสูงมาก</span>
+            </div>
+            <a href="#membership" class="btn btn-outline btn-full">จองคลาสเรียน</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive Tutorial Section -->
+  <section class="tutorial-section" id="tutorial">
+    <div class="container">
+      <div class="section-header">
+        <span class="sub-title">Beginner Guide</span>
+        <h2>สอนวิธีฝึกโยคะเบื้องต้น</h2>
+        <p class="section-desc">ฝึกฝน 3 ท่าพื้นฐานที่ถูกต้อง พร้อมดูจุดจัดวางสรีระ (Alignment Tips) และจุดผิดพลาดที่ต้องระวังเพื่อหลีกเลี่ยงการบาดเจ็บ</p>
+      </div>
+
+      <div class="tutorial-stepper-box">
+        <!-- Tab Headers -->
+        <div class="stepper-headers">
+          <button class="step-btn active" data-step="0">
+            <span class="step-num">1</span>
+            <span class="step-label">Downward Dog</span>
+          </button>
+          <button class="step-btn" data-step="1">
+            <span class="step-num">2</span>
+            <span class="step-label">Child's Pose</span>
+          </button>
+          <button class="step-btn" data-step="2">
+            <span class="step-num">3</span>
+            <span class="step-label">Cobra Pose</span>
+          </button>
+        </div>
+
+        <!-- Stepper Content Container -->
+        <div class="stepper-content-wrapper">
+          <!-- Step 1: Downward Dog -->
+          <div class="step-pane active" id="step-pane-0">
+            <div class="step-grid">
+              <!-- Visual Box with SVG overlay -->
+              <div class="step-visual-container">
+                <img src="images/tutorial_downward_dog.png" alt="Downward-Facing Dog Alignment" class="step-pose-img">
+                
+                <!-- SVG Annotations (Alignment overlay) -->
+                <svg class="alignment-svg" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid meet">
+                  <!-- Spine/Back line -->
+                  <path d="M 200 870 L 600 350" stroke="#f1c40f" stroke-width="4" stroke-dasharray="10 8" fill="none" />
+                  <circle cx="400" cy="610" r="10" fill="#f1c40f" />
+                  <line x1="400" y1="610" x2="450" y2="530" stroke="#f1c40f" stroke-width="2.5" />
+                  <text x="470" y="525" class="svg-text">หลังตรงเป็นเส้นตรง</text>
+
+                  <!-- Hips point -->
+                  <circle cx="600" cy="350" r="12" fill="#e67e22" />
+                  <line x1="600" y1="350" x2="680" y2="280" stroke="#e67e22" stroke-width="2.5" />
+                  <text x="700" y="275" class="svg-text highlight">ดันสะโพกขึ้นสูงสุด</text>
+
+                  <!-- Heels point -->
+                  <circle cx="850" cy="810" r="10" fill="#3498db" />
+                  <line x1="850" y1="810" x2="900" y2="740" stroke="#3498db" stroke-width="2.5" />
+                  <text x="720" y="730" class="svg-text">กดส้นเท้าหาพื้น</text>
+
+                  <!-- Hands point -->
+                  <circle cx="200" cy="870" r="10" fill="#3498db" />
+                  <line x1="200" y1="870" x2="150" y2="800" stroke="#3498db" stroke-width="2.5" />
+                  <text x="15" y="795" class="svg-text">กางนิ้วกดพื้นแน่น</text>
+                </svg>
+              </div>
+
+              <!-- Text Info Box -->
+              <div class="step-info-box">
+                <span class="step-tag">Step 1 • Adho Mukha Svanasana</span>
+                <h3>ท่าสุนัขก้มหน้า (Downward Dog)</h3>
+                <p class="pose-intro-text">ช่วยยืดเหยียดแผ่นหลัง ไหล่ แฮมสตริง และน่อง พร้อมทั้งกระตุ้นการไหลเวียนโลหิตมายังศีรษะ</p>
+                
+                <div class="alignment-details">
+                  <h4><i class="fa-solid fa-circle-check text-success"></i> ข้อควรปฏิบัติเพื่อความถูกต้อง:</h4>
+                  <ul>
+                    <li>กระจายน้ำหนักลงบนฝ่ามือทั้งสองข้างให้เท่าๆ กัน กางนิ้วกว้าง</li>
+                    <li>ยืดแนวกระดูกสันหลังให้ยาวตรง ไม่แอ่นหรือค่อมหลัง</li>
+                    <li>หากรู้สึกน่องตึงเกินไป ให้งอเข่าเล็กน้อยและเขย่งส้นเท้าไว้</li>
+                  </ul>
+                </div>
+
+                <div class="mistakes-box">
+                  <h4 class="text-danger"><i class="fa-solid fa-circle-xmark"></i> จุดผิดพลาดที่พบบ่อย (Common Mistakes):</h4>
+                  <div class="mistake-item">
+                    <span class="mistake-bad"><i class="fa-solid fa-x"></i> ห่อไหล่/หนีบหู</span>
+                    <span class="mistake-good"><i class="fa-solid fa-check"></i> วิธีแก้: หมุนต้นแขนออกด้านนอก เปิดไหล่ให้ห่างใบหู</span>
+                  </div>
+                  <div class="mistake-item">
+                    <span class="mistake-bad"><i class="fa-solid fa-x"></i> หลังค่อมงอ</span>
+                    <span class="mistake-good"><i class="fa-solid fa-check"></i> วิธีแก้: งอเข่า ดันสะโพกขึ้นและเน้นยืดหลังให้ตรงก่อน</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 2: Child's Pose -->
+          <div class="step-pane" id="step-pane-1">
+            <div class="step-grid">
+              <div class="step-visual-container">
+                <img src="images/tutorial_child_pose.png" alt="Child's Pose Alignment" class="step-pose-img">
+                <svg class="alignment-svg" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid meet">
+                  <!-- Head/Forehead -->
+                  <circle cx="400" cy="650" r="10" fill="#f1c40f" />
+                  <line x1="400" y1="650" x2="350" y2="580" stroke="#f1c40f" stroke-width="2.5" />
+                  <text x="210" y="575" class="svg-text">วางหน้าผากลงบนเสื่อ</text>
+
+                  <!-- Arms stretching -->
+                  <path d="M 120 700 L 400 650" stroke="#3498db" stroke-width="4" stroke-dasharray="8 6" fill="none" />
+                  <circle cx="120" cy="700" r="10" fill="#3498db" />
+                  <text x="30" y="750" class="svg-text">ยืดแขนไปข้างหน้าสุด</text>
+
+                  <!-- Hips -->
+                  <circle cx="770" cy="610" r="12" fill="#e67e22" />
+                  <line x1="770" y1="610" x2="820" y2="540" stroke="#e67e22" stroke-width="2.5" />
+                  <text x="730" y="530" class="svg-text highlight">กดสะโพกทับส้นเท้า</text>
+                </svg>
+              </div>
+              <div class="step-info-box">
+                <span class="step-tag">Step 2 • Balasana</span>
+                <h3>ท่าเด็ก (Child's Pose)</h3>
+                <p class="pose-intro-text">ท่าพักผ่อนที่ยอดเยี่ยม ช่วยยืดแผ่นหลังส่วนล่าง สะโพก ต้นขา และข้อเท้าอย่างอ่อนโยน พร้อมช่วยระงับความกระวนกระวายใจ</p>
+                
+                <div class="alignment-details">
+                  <h4><i class="fa-solid fa-circle-check text-success"></i> ข้อควรปฏิบัติเพื่อความถูกต้อง:</h4>
+                  <ul>
+                    <li>คุกเข่าลงบนพื้น นั่งทับส้นเท้า โป้งเท้าสัมผัสกัน กางเข่าออกจากกันกว้างเท่าสะโพก</li>
+                    <li>ก้มตัวลงยาวๆ วางหน้าท้องลงระหว่างต้นขา</li>
+                    <li>หายใจเข้าและออกลึกๆ ผ่อนคลายกล้ามเนื้อไหล่และบ่า</li>
+                  </ul>
+                </div>
+
+                <div class="mistakes-box">
+                  <h4 class="text-danger"><i class="fa-solid fa-circle-xmark"></i> จุดผิดพลาดที่พบบ่อย (Common Mistakes):</h4>
+                  <div class="mistake-item">
+                    <span class="mistake-bad"><i class="fa-solid fa-x"></i> สะโพกลอยสูงพ้นส้นเท้า</span>
+                    <span class="mistake-good"><i class="fa-solid fa-check"></i> วิธีแก้: ใช้บล็อกหรือหมอนโยคะหนุนบริเวณสะโพกหรือหน้าผาก</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 3: Cobra Pose -->
+          <div class="step-pane" id="step-pane-2">
+            <div class="step-grid">
+              <div class="step-visual-container">
+                <img src="images/tutorial_cobra.png" alt="Cobra Pose Alignment" class="step-pose-img">
+                <svg class="alignment-svg" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid meet">
+                  <!-- Chest/Heart center -->
+                  <circle cx="700" cy="420" r="12" fill="#e67e22" />
+                  <line x1="700" y1="420" x2="620" y2="350" stroke="#e67e22" stroke-width="2.5" />
+                  <text x="500" y="340" class="svg-text highlight">เปิดและยืดกระดูกอกขึ้น</text>
+
+                  <!-- Shoulders -->
+                  <circle cx="670" cy="500" r="10" fill="#f1c40f" />
+                  <line x1="670" y1="500" x2="570" y2="540" stroke="#f1c40f" stroke-width="2.5" />
+                  <text x="450" y="580" class="svg-text">กดไหล่ให้ห่างใบหู</text>
+
+                  <!-- Lower body/Hips -->
+                  <circle cx="430" cy="740" r="10" fill="#3498db" />
+                  <line x1="430" y1="740" x2="380" y2="670" stroke="#3498db" stroke-width="2.5" />
+                  <text x="250" y="650" class="svg-text">สะโพกและหลังเท้าชิดเสื่อ</text>
+                </svg>
+              </div>
+              <div class="step-info-box">
+                <span class="step-tag">Step 3 • Bhujangasana</span>
+                <h3>ท่างูเห่า (Cobra Pose)</h3>
+                <p class="pose-intro-text">ช่วยเสริมสร้างกระดูกสันหลังให้แข็งแกร่ง ยืดกล้ามเนื้อหน้าอก ไหล่ และหน้าท้อง พร้อมช่วยกระตุ้นอวัยวะในช่องท้อง</p>
+                
+                <div class="alignment-details">
+                  <h4><i class="fa-solid fa-circle-check text-success"></i> ข้อควรปฏิบัติเพื่อความถูกต้อง:</h4>
+                  <ul>
+                    <li>นอนคว่ำหน้า มือวางข้างหน้าอก ข้อศอกแนบข้างลำตัว</li>
+                    <li>กดกระดูกเชิงกรานและหลังเท้าให้แนบสนิทกับพื้นเสื่อ</li>
+                    <li>ใช้แรงจากกล้ามเนื้อหลังในการยืดตัวขึ้น ไม่ใช้เพียงแรงดันจากมือ</li>
+                  </ul>
+                </div>
+
+                <div class="mistakes-box">
+                  <h4 class="text-danger"><i class="fa-solid fa-circle-xmark"></i> จุดผิดพลาดที่พบบ่อย (Common Mistakes):</h4>
+                  <div class="mistake-item">
+                    <span class="mistake-bad"><i class="fa-solid fa-x"></i> เหยียดแขนตึงจนไหล่ห่อคอพับ</span>
+                    <span class="mistake-good"><i class="fa-solid fa-check"></i> วิธีแก้: งอข้อศอกเล็กน้อย หมุนไหล่ไปข้างหลัง กดไหล่ลง</span>
+                  </div>
+                  <div class="mistake-item">
+                    <span class="mistake-bad"><i class="fa-solid fa-x"></i> เจ็บหลังส่วนล่าง</span>
+                    <span class="mistake-good"><i class="fa-solid fa-check"></i> วิธีแก้: ยกหน้าอกขึ้นแต่พอประมาณ และเปิดใช้งานกล้ามเนื้อแกนกลาง</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div class="stepper-controls">
+          <button class="btn btn-outline" id="prev-step-btn" disabled><i class="fa-solid fa-chevron-left"></i> ท่าก่อนหน้า</button>
+          <button class="btn btn-primary" id="next-step-btn">ท่าถัดไป <i class="fa-solid fa-chevron-right"></i></button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Membership Section -->
+  <section class="membership-section" id="membership">
+    <div class="container">
+      <div class="section-header">
+        <span class="sub-title">Unlock Premium Journey</span>
+        <h2>เริ่มต้นเส้นทางระดับพรีเมียมของคุณ</h2>
+        <p class="section-desc">สมัครสมาชิกวันนี้เพื่อปลดล็อกฟีเจอร์เด่นและก้าวข้ามทุกข้อจำกัดของร่างกายไปกับผู้สอนโยคะระดับโลก</p>
+      </div>
+
+      <div class="pricing-grid">
+        <!-- Free Plan -->
+        <div class="pricing-card">
+          <div class="pricing-header">
+            <h3>Free Tier</h3>
+            <p class="plan-subtitle">สำหรับผู้เริ่มต้นทดลองฝึก</p>
+            <div class="price">฿0 <span>/ ตลอดชีพ</span></div>
+          </div>
+          <div class="pricing-body">
+            <ul>
+              <li><i class="fa-solid fa-check text-success"></i> เข้าชมคลาสวิดีโอระดับพื้นฐาน 5 คลาส</li>
+              <li><i class="fa-solid fa-check text-success"></i> ไกด์สอนจัดท่า Alignment Guide พื้นฐาน</li>
+              <li><i class="fa-solid fa-check text-success"></i> เข้าใช้งาน Yoga Quiz ค้นหาสไตล์</li>
+              <li class="text-muted"><i class="fa-solid fa-xmark text-danger"></i> วิดีโอสอนโยคะฉบับเต็มกว่า 100 คลาส</li>
+              <li class="text-muted"><i class="fa-solid fa-xmark text-danger"></i> ระบบติดตามความคืบหน้าส่วนบุคคล</li>
+              <li class="text-muted"><i class="fa-solid fa-xmark text-danger"></i> ปรึกษาและถามตอบคำถามกับผู้สอนโดยตรง</li>
+            </ul>
+          </div>
+          <div class="pricing-footer">
+            <button class="btn btn-outline btn-full register-trigger" data-plan="Free">สมัครสมาชิกฟรี</button>
+          </div>
+        </div>
+
+        <!-- Premium Plan -->
+        <div class="pricing-card premium-card">
+          <div class="popular-tag">RECOMMENDED</div>
+          <div class="pricing-header">
+            <h3>Premium Tier</h3>
+            <p class="plan-subtitle">เพื่อการพัฒนาที่ก้าวกระโดดและพรีเมียม</p>
+            <div class="price">฿450 <span>/ เดือน</span></div>
+          </div>
+          <div class="pricing-body">
+            <ul>
+              <li><i class="fa-solid fa-check text-success"></i> <strong>คลาสวิดีโอฉบับเต็มมากกว่า 100 คลาส</strong></li>
+              <li><i class="fa-solid fa-check text-success"></i> อัปเดตคลาสใหม่ทุกสัปดาห์</li>
+              <li><i class="fa-solid fa-check text-success"></i> <strong>Personalized Progress Tracker</strong></li>
+              <li><i class="fa-solid fa-check text-success"></i> ระบบวางแผนการฝึกส่วนตัวตามสไตล์ของคุณ</li>
+              <li><i class="fa-solid fa-check text-success"></i> <strong>Community Forums & Live Chat</strong></li>
+              <li><i class="fa-solid fa-check text-success"></i> ปรึกษาท่ายากและแก้ไขสรีระกับผู้สอนโดยตรง</li>
+            </ul>
+          </div>
+          <div class="pricing-footer">
+            <button class="btn btn-primary btn-full register-trigger" data-plan="Premium">สมัครสมาชิกพรีเมียม</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Meet the Instructors Section -->
+  <section class="instructors-section" id="instructors">
+    <div class="container">
+      <div class="section-header">
+        <span class="sub-title">Meet the Instructors</span>
+        <h2>แนะนำครูผู้สอนโยคะของคุณ</h2>
+        <p class="section-desc">เรียนรู้จากคุณครูผู้ได้รับใบรับรองระดับสากล (RYT) พร้อมที่จะช่วยจัดสรีระและแนะนำเทคนิคอย่างเป็นกันเอง</p>
+      </div>
+
+      <div class="instructors-grid">
+        <!-- Instructor 1 -->
+        <div class="instructor-card">
+          <div class="instructor-img-box">
+            <img src="images/instructor_1.png" alt="Yoga Instructor Kru Rin" class="instructor-img">
+          </div>
+          <div class="instructor-info">
+            <h3>ครูรินทร์ (Kru Rin)</h3>
+            <span class="instructor-title">ผู้ก่อตั้ง YOKA & ครูผู้สอนหลัก</span>
+            <p class="instructor-bio">ใบรับรอง RYT 500 จากสถาบันโยคะนานาชาติ เชี่ยวชาญ Hatha & Yin Yoga ประสบการณ์สอนมากกว่า 8 ปี เน้นการฝึกโยคะเพื่อการบำบัดจิตใจและสมาธิ</p>
+            <div class="instructor-badges">
+              <span class="badge">RYT 500</span>
+              <span class="badge">Hatha Specialist</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Instructor 2 -->
+        <div class="instructor-card">
+          <div class="instructor-img-box">
+            <img src="images/instructor_2.png" alt="Yoga Instructor Kru Paul" class="instructor-img">
+          </div>
+          <div class="instructor-info">
+            <h3>ครูพอล (Kru Paul)</h3>
+            <span class="instructor-title">ครูผู้สอนแนว Vinyasa & Ashtanga</span>
+            <p class="instructor-bio">ใบรับรอง RYT 200 เชี่ยวชาญโยคะแนวไดนามิกเน้นเพิ่มความแข็งแกร่งของแกนกลางลำตัวและการคาร์ดิโอ ประสบการณ์สอน 5 ปี ดุดันแต่น่ารักและใส่ใจทุกคน</p>
+            <div class="instructor-badges">
+              <span class="badge">RYT 200</span>
+              <span class="badge">Ashtanga Flow</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="faq-section" id="faq">
+    <div class="container faq-container">
+      <div class="section-header">
+        <span class="sub-title">FAQ</span>
+        <h2>คำถามที่พบบ่อย</h2>
+        <p class="section-desc">หากคุณยังมีข้อสงสัย เราได้รวบรวมคำถามที่ผู้เริ่มต้นมักจะถามบ่อยๆ ไว้ที่นี่</p>
+      </div>
+
+      <div class="faq-accordion">
+        <!-- FAQ 1 -->
+        <details class="faq-item">
+          <summary class="faq-question">
+            ตัวตึงมากก้มไม่แตะพื้นฝึกได้ไหม?
+            <span class="faq-icon"><i class="fa-solid fa-chevron-down"></i></span>
+          </summary>
+          <div class="faq-answer">
+            <p>ฝึกได้แน่นอนครับ! นี่คือความเข้าใจผิดที่พบบ่อย โยคะมีไว้สำหรับผู้ที่ตัวตึงเพื่อเพิ่มความยืดหยุ่น ในคลาสเรียนเรามีบล็อกและสายรัดช่วยปรับระดับท่าให้เหมาะกับสรีระปัจจุบันของคุณครับ</p>
+          </div>
+        </details>
+
+        <!-- FAQ 2 -->
+        <details class="faq-item">
+          <summary class="faq-question">
+            ต้องซื้ออุปกรณ์อะไรบ้างก่อนเริ่มต้น?
+            <span class="faq-icon"><i class="fa-solid fa-chevron-down"></i></span>
+          </summary>
+          <div class="faq-answer">
+            <p>เริ่มต้นใช้เพียง <strong>เสื่อโยคะ (Yoga Mat)</strong> ที่มีคุณสมบัติกันลื่นได้ดี และเสื้อผ้าที่มีความยืดหยุ่นเคลื่อนไหวสะดวก สำหรับบล็อกหรือสายรัดโยคะ สามารถหาซื้อเพิ่มเติมภายหลังหรือใช้อุปกรณ์ในบ้านประยุกต์ได้ครับ</p>
+          </div>
+        </details>
+
+        <!-- FAQ 3 -->
+        <details class="faq-item">
+          <summary class="faq-question">
+            ฝึกสัปดาห์ละกี่ครั้งถึงจะเห็นผล?
+            <span class="faq-icon"><i class="fa-solid fa-chevron-down"></i></span>
+          </summary>
+          <div class="faq-answer">
+            <p>แนะนำฝึกอย่างน้อยสัปดาห์ละ 2-3 ครั้ง ครั้งละ 30-60 นาทีเพื่อการปรับปรุงสรีระที่เห็นผล หรือสามารถฝึกเบาๆ วันละ 15 นาทีตามไกด์แนะนำของเราเพื่อผ่อนคลายความเหนื่อยล้าประจำวันได้เช่นกันครับ</p>
+          </div>
+        </details>
+
+        <!-- FAQ 4 -->
+        <details class="faq-item">
+          <summary class="faq-question">
+            มีโรคประจำตัวหรือปวดหลังส่วนล่างสามารถฝึกได้ไหม?
+            <span class="faq-icon"><i class="fa-solid fa-chevron-down"></i></span>
+          </summary>
+          <div class="faq-answer">
+            <p>สามารถฝึกได้โยคะแนวบำบัด (เช่น Hatha หรือ Yin เบาๆ) อย่างไรก็ตาม หากคุณมีปวดหลังรุนแรง หมอนรองกระดูกทับเส้นประสาท หรือตั้งครรภ์ ควรปรึกษาแพทย์ประจำตัวก่อน และแจ้งให้ครูผู้สอนทราบทุกครั้งก่อนเริ่มฝึกคลาสครับ</p>
+          </div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="main-footer">
+    <div class="container footer-grid">
+      <div class="footer-brand-column">
+        <div class="logo-area">
+          <img src="images/logo.png" alt="YOKA Logo" class="logo-img">
+          <span class="logo-text">YOKA</span>
+        </div>
+        <p>ศาสตร์โยคะระดับพรีเมียม ค้นพบความสมดุล ความแข็งแกร่ง และความสงบของจิตใจไปกับเรา</p>
+        <div class="social-links">
+          <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook"></i></a>
+          <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+        </div>
+      </div>
+      <div class="footer-links-column">
+        <h4>เมนูนำทาง</h4>
+        <ul>
+          <li><a href="#hero">หน้าแรก</a></li>
+          <li><a href="#benefits">ประโยชน์</a></li>
+          <li><a href="#types">ประเภทโยคะ</a></li>
+          <li><a href="#tutorial">สอนฝึกท่าพื้นฐาน</a></li>
+        </ul>
+      </div>
+      <div class="footer-links-column">
+        <h4>บริการและเงื่อนไข</h4>
+        <ul>
+          <li><a href="#membership">แผนสมาชิก</a></li>
+          <li><a href="#instructors">ผู้แนะนำ</a></li>
+          <li><a href="#">นโยบายความเป็นส่วนตัว</a></li>
+          <li><a href="#">เงื่อนไขการให้บริการ</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom text-center">
+      <p>&copy; 2026 YOKA Yoga Studio. All rights reserved. ออกแบบด้วยวิสัยทัศน์ความผ่อนคลายในตัวคุณ</p>
+    </div>
+  </footer>
+
+  <!-- Native Dialog: Yoga Quiz Modal (Light dismiss enabled by default in modern HTML) -->
+  <dialog id="quiz-modal" class="quiz-modal">
+    <div class="quiz-modal-container">
+      <button class="close-quiz-btn" id="close-quiz" aria-label="Close Quiz">&times;</button>
+      
+      <!-- Quiz Header -->
+      <div class="quiz-header">
+        <i class="fa-solid fa-sparkles text-gold quiz-decor-icon"></i>
+        <h2>Yoga Quiz</h2>
+        <p>ค้นหาสไตล์โยคะที่เหมาะสมที่สุดสำหรับคุณใน 3 คำถามง่ายๆ</p>
+      </div>
+
+      <!-- Quiz Content Box -->
+      <div id="quiz-question-container">
+        <!-- Question 1 (Markup for clarity) -->
+        <div class="quiz-step active" data-q="0">
+          <h3>คำถามที่ 1: เป้าหมายหลักในการฝึกโยคะของคุณคืออะไร?</h3>
+          <div class="quiz-options">
+            <button class="quiz-opt" data-score="hatha">
+              <span class="opt-bullet">A</span>
+              <span class="opt-text">ต้องการยืดเหยียดร่างกายแบบผ่อนคลาย ไม่หักโหม (เน้นฟื้นฟู)</span>
+            </button>
+            <button class="quiz-opt" data-score="vinyasa">
+              <span class="opt-bullet">B</span>
+              <span class="opt-text">ต้องการออกกำลังกาย ได้เหงื่อ และสร้างความแข็งแกร่ง (เน้นความร้อน)</span>
+            </button>
+            <button class="quiz-opt" data-score="yin">
+              <span class="opt-bullet">C</span>
+              <span class="opt-text">ต้องการบำบัดความเครียดลึกๆ และลดความเมื่อยล้าจากการนั่งนานๆ</span>
+            </button>
+            <button class="quiz-opt" data-score="ashtanga">
+              <span class="opt-bullet">D</span>
+              <span class="opt-text">ต้องการความท้าทาย ฝึกฝนร่างกายขั้นสูงสุดอย่างมีระบบ</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Question 2 -->
+        <div class="quiz-step" data-q="1">
+          <h3>คำถามที่ 2: ระดับประสบการณ์ในการฝึกโยคะของคุณคือระดับใด?</h3>
+          <div class="quiz-options">
+            <button class="quiz-opt" data-score="hatha">
+              <span class="opt-bullet">A</span>
+              <span class="opt-text">ไม่เคยฝึกเลย หรือเพิ่งเคยฝึกไม่กี่ครั้ง (มือใหม่มากๆ)</span>
+            </button>
+            <button class="quiz-opt" data-score="yin">
+              <span class="opt-bullet">B</span>
+              <span class="opt-text">เคยฝึกบ้างเป็นครั้งคราว และเน้นแนวบำบัดยืดเหยียด</span>
+            </button>
+            <button class="quiz-opt" data-score="vinyasa">
+              <span class="opt-bullet">C</span>
+              <span class="opt-text">ฝึกเป็นประจำ มีพละกำลังและกำลังมองหาการท้าทาย</span>
+            </button>
+            <button class="quiz-opt" data-score="ashtanga">
+              <span class="opt-bullet">D</span>
+              <span class="opt-text">ระดับกลางถึงสูง เข้าใจท่าทางพื้นฐานดีและอยากได้ระเบียบขั้นสูง</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Question 3 -->
+        <div class="quiz-step" data-q="2">
+          <h3>คำถามที่ 3: จังหวะความเร็วในการเคลื่อนไหวร่างกายแบบไหนที่คุณชอบที่สุด?</h3>
+          <div class="quiz-options">
+            <button class="quiz-opt" data-score="yin">
+              <span class="opt-bullet">A</span>
+              <span class="opt-text">ช้ามากๆ ค้างท่ายาวนาน ได้อยู่กับตัวเองนิ่งๆ</span>
+            </button>
+            <button class="quiz-opt" data-score="hatha">
+              <span class="opt-bullet">B</span>
+              <span class="opt-text">จังหวะช้าถึงปานกลาง เคลื่อนไหวอย่างมีระเบียบและรอบคอบ</span>
+            </button>
+            <button class="quiz-opt" data-score="vinyasa">
+              <span class="opt-bullet">C</span>
+              <span class="opt-text">ไหลลื่นต่อเนื่อง เคลื่อนไหวรวดเร็วประสานสัมพันธ์ตามลมหายใจ</span>
+            </button>
+            <button class="quiz-opt" data-score="ashtanga">
+              <span class="opt-bullet">D</span>
+              <span class="opt-text">รวดเร็ว หนักหน่วง แข็งขัน และท้าทายร่างกายตลอดคลาส</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Result Step -->
+        <div class="quiz-step" id="quiz-result-step">
+          <div class="result-box">
+            <div class="result-icon-box"><i class="fa-solid fa-circle-check"></i></div>
+            <h3>ผลวิเคราะห์สไตล์โยคะของคุณคือ:</h3>
+            <h2 id="recommended-yoga-type" class="text-gold font-outfit">Hatha Yoga</h2>
+            <p id="recommended-yoga-desc">คุณเหมาะกับการฝึกแบบจัดระบบสรีระอย่างนุ่มนวลและเน้นความปลอดภัย เหมาะสำหรับเริ่มต้นสร้างสติและสมาธิให้มั่นคง</p>
+            <div class="result-ctas">
+              <button class="btn btn-primary" id="quiz-cta-action">จองคลาสเรียนโยคะนี้</button>
+              <button class="btn btn-outline" id="quiz-restart">ทำแบบทดสอบใหม่</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quiz Progress Indicator -->
+      <div class="quiz-progress-bar-container">
+        <div class="quiz-progress" id="quiz-progress-fill"></div>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Native Dialog: Membership Form Modal -->
+  <dialog id="register-modal" class="quiz-modal">
+    <div class="quiz-modal-container">
+      <button class="close-quiz-btn" id="close-register" aria-label="Close Form">&times;</button>
+      
+      <div class="quiz-header">
+        <i class="fa-solid fa-id-card text-gold quiz-decor-icon"></i>
+        <h2>ลงทะเบียนฝึกโยคะ</h2>
+        <p>กรอกข้อมูลสั้นๆ ด้านล่างเพื่อเริ่มสร้างพรีเมียมเจอร์นีย์ของคุณกับแผน <span id="selected-plan-name" class="text-gold font-outfit">Premium Tier</span></p>
+      </div>
+
+      <form id="register-form" class="register-form">
+        <div class="form-group">
+          <label for="reg-name">ชื่อ - นามสกุล <span class="text-danger">*</span></label>
+          <input type="text" id="reg-name" required placeholder="เช่น สมชาย ใจดี">
+        </div>
+        <div class="form-group">
+          <label for="reg-email">อีเมล <span class="text-danger">*</span></label>
+          <input type="email" id="reg-email" required placeholder="example@email.com">
+        </div>
+        <div class="form-group">
+          <label for="reg-tel">เบอร์โทรศัพท์ <span class="text-danger">*</span></label>
+          <input type="tel" id="reg-tel" required placeholder="089-xxx-xxxx">
+        </div>
+        
+        <button type="submit" class="btn btn-primary btn-full submit-form-btn">ยืนยันข้อมูลลงทะเบียน</button>
+      </form>
+    </div>
+  </dialog>
+
+  <!-- Success Notification Box (Toast) -->
+  <div class="toast" id="toast-success">
+    <i class="fa-solid fa-circle-check toast-icon"></i>
+    <div class="toast-body">
+      <h4 id="toast-title">สำเร็จ!</h4>
+      <p id="toast-message">เราได้รับการสมัครเรียบร้อยแล้ว</p>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
