@@ -1,32 +1,37 @@
 document.addEventListener('DOMContentLoaded', () => {
 
   // ==========================================================================
-  // 1. Dark Mode / Theme Toggle Logic (Aligned with the 'dark-mode' guide)
+  // 1. Dark Mode / Theme Toggle Logic (Aligned with Tailwind and CSS variables)
   // ==========================================================================
   const themeToggleBtn = document.getElementById('theme-toggle');
   const colorSchemeMeta = document.querySelector('meta[name="color-scheme"]');
-  const themeIcon = themeToggleBtn.querySelector('i');
 
   // Check if system prefers dark
   const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)');
 
   function updateThemeUI(theme) {
     if (theme === 'dark') {
-      document.documentElement.classList.add('dark-theme');
+      document.documentElement.classList.add('dark-theme', 'dark');
       document.documentElement.classList.remove('light-theme');
       colorSchemeMeta.content = 'dark';
-      themeIcon.className = 'fa-solid fa-sun'; // sun icon for light mode trigger
+      themeToggleBtn.textContent = 'light_mode'; // sun icon
     } else if (theme === 'light') {
       document.documentElement.classList.add('light-theme');
-      document.documentElement.classList.remove('dark-theme');
+      document.documentElement.classList.remove('dark-theme', 'dark');
       colorSchemeMeta.content = 'light';
-      themeIcon.className = 'fa-solid fa-moon'; // moon icon for dark mode trigger
+      themeToggleBtn.textContent = 'dark_mode'; // moon icon
     } else {
-      // Default / System preferred
+      // System default
       document.documentElement.classList.remove('dark-theme', 'light-theme');
-      colorSchemeMeta.content = 'light dark';
       const currentSystemDark = systemPrefersDark.matches;
-      themeIcon.className = currentSystemDark ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+      if (currentSystemDark) {
+        document.documentElement.classList.add('dark');
+        themeToggleBtn.textContent = 'light_mode';
+      } else {
+        document.documentElement.classList.remove('dark');
+        themeToggleBtn.textContent = 'dark_mode';
+      }
+      colorSchemeMeta.content = 'light dark';
     }
   }
 
@@ -35,31 +40,20 @@ document.addEventListener('DOMContentLoaded', () => {
   if (storedTheme) {
     updateThemeUI(storedTheme);
   } else {
-    // Follow system settings
     updateThemeUI('system');
   }
 
-  // Handle manual toggle (System -> opposite -> Opposite pinned)
+  // Handle manual toggle
   themeToggleBtn.addEventListener('click', () => {
-    const currentTheme = colorSchemeMeta.content;
-    let nextTheme = 'light';
-    
-    // Toggle theme state
-    if (currentTheme.includes('light') && !currentTheme.includes('dark')) {
-      nextTheme = 'dark';
-    } else if (currentTheme.includes('dark') && !currentTheme.includes('light')) {
-      nextTheme = 'light';
-    } else {
-      // It is currently system (light dark). Pinned theme will be the opposite of current preference
-      nextTheme = systemPrefersDark.matches ? 'light' : 'dark';
-    }
+    const isDark = document.documentElement.classList.contains('dark');
+    const nextTheme = isDark ? 'light' : 'dark';
 
     localStorage.setItem('color-scheme', nextTheme);
     updateThemeUI(nextTheme);
   });
 
   // Watch for system preference changes at runtime
-  systemPrefersDark.addEventListener('change', (e) => {
+  systemPrefersDark.addEventListener('change', () => {
     if (!localStorage.getItem('color-scheme')) {
       updateThemeUI('system');
     }
@@ -70,37 +64,22 @@ document.addEventListener('DOMContentLoaded', () => {
   // 2. Mobile Menu Toggle
   // ==========================================================================
   const mobileToggle = document.getElementById('mobile-toggle');
-  const mainNav = document.getElementById('main-nav');
+  const mobileNav = document.getElementById('mobile-nav');
 
   mobileToggle.addEventListener('click', () => {
-    mainNav.classList.toggle('mobile-open');
-    const icon = mobileToggle.querySelector('i');
-    if (mainNav.classList.contains('mobile-open')) {
-      icon.className = 'fa-solid fa-xmark';
-      mainNav.style.display = 'flex';
-      mainNav.style.flexDirection = 'column';
-      mainNav.style.position = 'absolute';
-      mainNav.style.top = '80px';
-      mainNav.style.left = '0';
-      mainNav.style.width = '100%';
-      mainNav.style.backgroundColor = 'var(--color-header-bg)';
-      mainNav.style.padding = '20px';
-      mainNav.style.borderBottom = '1px solid var(--color-border)';
-      mainNav.style.gap = '20px';
+    mobileNav.classList.toggle('hidden');
+    if (mobileNav.classList.contains('hidden')) {
+      mobileToggle.textContent = 'menu';
     } else {
-      icon.className = 'fa-solid fa-bars';
-      mainNav.style.display = '';
+      mobileToggle.textContent = 'close';
     }
   });
 
   // Close mobile nav when clicking a link
-  mainNav.querySelectorAll('a').forEach(link => {
+  mobileNav.querySelectorAll('a').forEach(link => {
     link.addEventListener('click', () => {
-      if (mainNav.classList.contains('mobile-open')) {
-        mainNav.classList.remove('mobile-open');
-        mobileToggle.querySelector('i').className = 'fa-solid fa-bars';
-        mainNav.style.display = '';
-      }
+      mobileNav.classList.add('hidden');
+      mobileToggle.textContent = 'menu';
     });
   });
 
@@ -109,18 +88,29 @@ document.addEventListener('DOMContentLoaded', () => {
   // 3. Yoga Types Filter Logic
   // ==========================================================================
   const filterBtns = document.querySelectorAll('.filter-btn');
-  const typeCards = document.querySelectorAll('.type-card');
+  const typeCards = document.querySelectorAll('#types-grid > div');
+
+  // Highlight 'all' filter initially
+  const defaultFilter = document.querySelector('.filter-btn[data-filter="all"]');
+  if (defaultFilter) {
+    defaultFilter.classList.add('bg-primary', 'text-white', 'border-primary');
+    defaultFilter.classList.remove('bg-white', 'dark:bg-black', 'text-on-surface', 'border-outline-variant/60');
+  }
 
   filterBtns.forEach(btn => {
     btn.addEventListener('click', () => {
-      // Toggle active status
-      filterBtns.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
+      // Toggle active states on button classes
+      filterBtns.forEach(b => {
+        b.classList.remove('bg-primary', 'text-white', 'border-primary');
+        b.classList.add('bg-white', 'dark:bg-black', 'text-on-surface', 'border-outline-variant/60');
+      });
+      btn.classList.add('bg-primary', 'text-white', 'border-primary');
+      btn.classList.remove('bg-white', 'dark:bg-black', 'text-on-surface', 'border-outline-variant/60');
 
       const filterValue = btn.getAttribute('data-filter');
 
       typeCards.forEach(card => {
-        const cardTags = card.getAttribute('data-tags');
+        const cardTags = card.getAttribute('data-tags') || '';
         
         if (filterValue === 'all' || cardTags.includes(filterValue)) {
           card.style.display = 'flex';
@@ -141,27 +131,66 @@ document.addEventListener('DOMContentLoaded', () => {
   // 4. Interactive Stepper Tutorial Logic
   // ==========================================================================
   const stepBtns = document.querySelectorAll('.step-btn');
-  const stepPanes = document.querySelectorAll('.step-pane');
+  const stepPanes = document.querySelectorAll('.step-pane-view');
   const prevBtn = document.getElementById('prev-step-btn');
   const nextBtn = document.getElementById('next-step-btn');
   let currentStep = 0;
 
+  const stepTips = [
+    {
+      mistake: "ยกไหล่หนีบหู และหลังโก่งค่อมเข่าตึงจนเกินไป",
+      correct: "กางนิ้วมือดันพื้นให้แน่น ยืดอกดึงไหล่ห่างใบหู ดันสะโพกขึ้นและยืดหลังยาวตรง"
+    },
+    {
+      mistake: "เกร็งหน้าท้องสะโพกลอยสูง ไม่ยอมผ่อนคลายร่างกายลงหาเสื่อ",
+      correct: "ยืดแขนสองข้างไปด้านหน้าให้สุด วางหน้าผากผ่อนคลาย และกดสะโพกทับส้นเท้า"
+    },
+    {
+      mistake: "เงยหน้าก้มคอหักมากจนปวดกล้ามเนื้อคอบ่าไหล่",
+      correct: "กดหลังเท้าและหน้าขาแนบพื้น ยืดอกขึ้นดึงไหล่เปิดออกด้านหลังอย่างผ่อนคลาย"
+    }
+  ];
+
   function updateStepper(index) {
     currentStep = index;
 
-    // Header buttons
+    // Header buttons styling
     stepBtns.forEach((btn, i) => {
-      if (i === index) btn.classList.add('active');
-      else btn.classList.remove('active');
+      const stepNum = btn.querySelector('span');
+      if (i === index) {
+        btn.classList.add('border-primary');
+        btn.classList.remove('border-outline-variant', 'opacity-45');
+        if (stepNum) {
+          stepNum.classList.add('text-primary');
+          stepNum.classList.remove('text-on-surface-variant');
+        }
+      } else {
+        btn.classList.remove('border-primary');
+        btn.classList.add('border-outline-variant', 'opacity-45');
+        if (stepNum) {
+          stepNum.classList.remove('text-primary');
+          stepNum.classList.add('text-on-surface-variant');
+        }
+      }
     });
 
-    // Content panes
+    // Content panes toggle
     stepPanes.forEach((pane, i) => {
-      if (i === index) pane.classList.add('active');
-      else pane.classList.remove('active');
+      if (i === index) {
+        pane.classList.remove('hidden');
+        pane.classList.add('active');
+      } else {
+        pane.classList.add('hidden');
+        pane.classList.remove('active');
+      }
     });
 
-    // Navigation Controls state
+    // Update mistake/correct text tips
+    const tips = stepTips[index];
+    document.getElementById('mistake-text').textContent = tips.mistake;
+    document.getElementById('correct-text').textContent = tips.correct;
+
+    // Navigation buttons state
     prevBtn.disabled = index === 0;
     nextBtn.disabled = index === stepPanes.length - 1;
   }
@@ -202,23 +231,23 @@ document.addEventListener('DOMContentLoaded', () => {
   const yogaTypeDetails = {
     hatha: {
       title: 'Hatha Yoga (หฐโยคะ)',
-      desc: 'คุณเหมาะกับการฝึกแบบดั้งเดิมที่เน้นท่วงท่าช้าๆ จัดปรับสรีระอย่างนุ่มนวลและสติระลึกรู้ ปลอดภัยสำหรับผู้ฝึกหัดใหม่และเสริมสร้างรากฐานที่ดีครับ'
+      desc: 'คุณเหมาะกับการฝึกแบบดั้งเดิมที่เน้นท่วงท่าช้าๆ จัดปรับสรีระอย่างนุ่มนวลและสติระลึกรู้ ปลอดภัยสำหรับผู้ฝึกหัดใหม่และสร้างรากฐานร่างกายที่ดีครับ'
     },
     vinyasa: {
       title: 'Vinyasa Yoga (วินยาสะโยคะ)',
-      desc: 'คุณเหมาะกับการฝึกที่ไหลลื่นตามลมหายใจ ได้ระเบิดพลังงาน กระตุ้นหัวใจ คาร์ดิโอ และสร้างกล้ามเนื้อแกนกลางที่แข็งแกร่งอย่างสนุกสนานครับ'
+      desc: 'คุณเหมาะกับการฝึกที่ไหลลื่นตามจังหวะลมหายใจ ได้ออกกำลังกายอย่างต่อเนื่อง ได้เหงื่อกระตุ้นหัวใจ คาร์ดิโอ และสร้างความแข็งแกร่งอย่างลื่นไหลครับ'
     },
     yin: {
       title: 'Yin Yoga (หยินโยคะ)',
-      desc: 'คุณเหมาะกับการฝึกแบบเย็นค้างท่าอย่างสงบและผ่อนคลายลึกๆ ช่วยคลายเนื้อเยื่อข้อต่อและปลดปล่อยความตึงเครียดสะสมจากออฟฟิศซินโดรมได้อย่างดีเลิศ'
+      desc: 'คุณเหมาะกับการฝึกค้างท่าอย่างช้าๆ ผ่อนคลายลึกๆ ช่วยบำบัดฟื้นฟูข้อต่อและพังผืดลึก ปลดปล่อยความตึงเครียดสะสมจากออฟฟิศซินโดรมและจิตใจได้ดีที่สุด'
     },
     ashtanga: {
       title: 'Ashtanga Yoga (อัษฎางคโยคะ)',
-      desc: 'คุณเหมาะกับการฝึกสายวินัยความท้าทายขั้นสูงแบบดั้งเดิม ท่าทางสม่ำเสมอมีระเบียบระบบชัดเจน ได้ทดสอบความอดทนและความแข็งแกร่งของร่างกายสูงสุด'
+      desc: 'คุณเหมาะกับการฝึกสายดั้งเดิมที่มีความสม่ำเสมอ มีระเบียบวินัยและลำดับท่าที่ตายตัว ท้าทายทั้งความแข็งแกร่งทางกายภาพและพลังสมาธิขั้นสูงสุดครับ'
     }
   };
 
-  // Open modal
+  // Open Quiz Modal
   quizTriggers.forEach(trigger => {
     trigger.addEventListener('click', () => {
       resetQuiz();
@@ -226,39 +255,39 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Close modal
+  // Close Quiz Modal
   closeQuizBtn.addEventListener('click', () => quizModal.close());
 
-  // Light dismiss: Close on outside click
+  // Light Dismiss: Close quiz modal on clicking backdrop
   quizModal.addEventListener('click', (e) => {
     if (e.target === quizModal) {
       quizModal.close();
     }
   });
 
-  // Handle option selection
+  // Quiz Options Click
   const optionButtons = document.querySelectorAll('.quiz-opt');
   optionButtons.forEach(btn => {
     btn.addEventListener('click', () => {
       const score = btn.getAttribute('data-score');
       quizAnswers.push(score);
-
       goToNextQuizStep();
     });
   });
 
   function goToNextQuizStep() {
     quizSteps[currentQuizStepIndex].classList.remove('active');
+    quizSteps[currentQuizStepIndex].classList.add('hidden');
     currentQuizStepIndex++;
 
-    // Calculate progress (3 questions total, index goes from 0 -> 1 -> 2 -> Result)
+    // Calculate progress
     const progressPercent = Math.min((currentQuizStepIndex / 3) * 100, 100);
     quizProgress.style.width = `${progressPercent}%`;
 
     if (currentQuizStepIndex < 3) {
       quizSteps[currentQuizStepIndex].classList.add('active');
+      quizSteps[currentQuizStepIndex].classList.remove('hidden');
     } else {
-      // Calculate and show result
       showQuizResult();
     }
   }
@@ -281,34 +310,39 @@ document.addEventListener('DOMContentLoaded', () => {
     recommendedType.textContent = result.title;
     recommendedDesc.textContent = result.desc;
 
-    // Set CTA action (Scroll directly to that type card on the main page)
+    // Set quiz recommendation action
     quizCtaBtn.onclick = () => {
       quizModal.close();
       const typesSection = document.getElementById('types');
       typesSection.scrollIntoView({ behavior: 'smooth' });
 
-      // Automatically click matching filter to highlight class
+      // Highlight the matching filter btn
       const filterMap = { hatha: 'gentle', vinyasa: 'dynamic', yin: 'restorative', ashtanga: 'dynamic' };
       const matchedFilter = document.querySelector(`.filter-btn[data-filter="${filterMap[maxType]}"]`);
       if (matchedFilter) matchedFilter.click();
     };
 
     document.getElementById('quiz-result-step').classList.add('active');
+    document.getElementById('quiz-result-step').classList.remove('hidden');
   }
 
   function resetQuiz() {
     quizAnswers = [];
     currentQuizStepIndex = 0;
     quizProgress.style.width = '0%';
-    quizSteps.forEach(step => step.classList.remove('active'));
+    quizSteps.forEach(step => {
+      step.classList.remove('active');
+      step.classList.add('hidden');
+    });
     quizSteps[0].classList.add('active');
+    quizSteps[0].classList.remove('hidden');
   }
 
   quizRestartBtn.addEventListener('click', resetQuiz);
 
 
   // ==========================================================================
-  // 6. Registration Modal & Toast Logic
+  // 6. Registration Modal & Success Toast Logic
   // ==========================================================================
   const registerModal = document.getElementById('register-modal');
   const closeRegisterBtn = document.getElementById('close-register');
@@ -330,7 +364,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   closeRegisterBtn.addEventListener('click', () => registerModal.close());
 
-  // Light dismiss: Close on outside click
   registerModal.addEventListener('click', (e) => {
     if (e.target === registerModal) {
       registerModal.close();
@@ -342,17 +375,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const name = document.getElementById('reg-name').value;
     const planText = selectedPlanName.textContent;
 
-    // Close Modal
+    // Close and reset form
     registerModal.close();
     registerForm.reset();
 
-    // Show Beautiful Success Toast
-    toastTitle.textContent = 'สมัครสมาชิกสำเร็จ!';
-    toastMessage.textContent = `ยินดีต้อนรับคุณ ${name} สู่ครอบครัว YOKA แผน ${planText} แล้วครับ!`;
-    
-    toast.classList.add('show');
+    // Trigger Toast Success
+    toastTitle.textContent = 'ลงทะเบียนสำเร็จ!';
+    toastMessage.textContent = `ยินดีต้อนรับคุณ ${name} เข้าสู่สตูดิโอ YOKA แผน ${planText} เรียบร้อยแล้วครับ!`;
+
+    // Toggle Tailwind classes to show toast
+    toast.classList.remove('translate-y-24', 'opacity-0', 'pointer-events-none');
+    toast.classList.add('translate-y-0', 'opacity-100');
+
     setTimeout(() => {
-      toast.classList.remove('show');
+      toast.classList.add('translate-y-24', 'opacity-0', 'pointer-events-none');
+      toast.classList.remove('translate-y-0', 'opacity-100');
     }, 5000);
   });
 

@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>YOKA | Luminous Flow Yoga</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Outfit:wght@100..900&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-variant": "#e3e1ef",
+                        "on-tertiary": "#ffffff",
+                        "tertiary": "#006782",
+                        "primary-fixed-dim": "#ffb95f",
+                        "error": "#ba1a1a",
+                        "inverse-on-surface": "#f2effd",
+                        "surface-container-highest": "#e3e1ef",
+                        "outline": "#857462",
+                        "on-surface-variant": "#534434",
+                        "tertiary-container": "#00cbfd",
+                        "on-tertiary-fixed": "#001f29",
+                        "inverse-surface": "#302f3a",
+                        "primary-fixed": "#ffddb8",
+                        "on-primary-fixed-variant": "#653e00",
+                        "surface-bright": "#fcf8ff",
+                        "on-secondary-fixed-variant": "#004b73",
+                        "on-secondary-fixed": "#001d31",
+                        "secondary-fixed": "#cce5ff",
+                        "on-error": "#ffffff",
+                        "on-surface": "#1b1b25",
+                        "on-background": "#1b1b25",
+                        "primary-container": "#ffa929",
+                        "inverse-primary": "#ffb95f",
+                        "tertiary-fixed": "#baeaff",
+                        "error-container": "#ffdad6",
+                        "on-primary": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "surface-container-high": "#e9e6f5",
+                        "on-primary-container": "#6b4200",
+                        "outline-variant": "#d8c3ae",
+                        "on-tertiary-fixed-variant": "#004d62",
+                        "secondary-fixed-dim": "#92ccff",
+                        "background": "#fcf8ff",
+                        "on-secondary": "#ffffff",
+                        "surface-container": "#efecfb",
+                        "primary": "#855300",
+                        "secondary": "#006397",
+                        "on-secondary-container": "#00476e",
+                        "tertiary-fixed-dim": "#5cd4ff",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-dim": "#dbd8e7",
+                        "surface-container-low": "#f5f2ff",
+                        "on-primary-fixed": "#2a1700",
+                        "surface-tint": "#855300",
+                        "surface": "#fcf8ff",
+                        "secondary-container": "#5cb8fd",
+                        "on-tertiary-container": "#005268"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "lg": "48px",
+                        "xs": "4px",
+                        "md": "24px",
+                        "margin-mobile": "20px",
+                        "base": "8px",
+                        "gutter": "24px",
+                        "margin-desktop": "64px",
+                        "sm": "12px",
+                        "xl": "80px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Inter"],
+                        "label-md": ["Inter"],
+                        "headline-md": ["Outfit"],
+                        "label-sm": ["Inter"],
+                        "headline-sm": ["Outfit"],
+                        "display-lg": ["Outfit"],
+                        "body-md": ["Inter"],
+                        "display-lg-mobile": ["Outfit"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "headline-md": ["32px", {"lineHeight": "40px", "fontWeight": "500"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.03em", "fontWeight": "500"}],
+                        "headline-sm": ["24px", {"lineHeight": "32px", "fontWeight": "500"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "display-lg-mobile": ["36px", {"lineHeight": "42px", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+        .tonal-shadow {
+            box-shadow: 0 20px 50px rgba(255, 169, 41, 0.1);
+        }
+        .hover-lift {
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
+        }
+        .hover-lift:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 30px 60px rgba(255, 169, 41, 0.2);
+        }
+        .glow-gold:hover {
+            box-shadow: 0 0 25px rgba(255, 169, 41, 0.4);
+        }
+        @keyframes pulse-ring {
+            0% { transform: scale(0.8); opacity: 0.5; }
+            100% { transform: scale(1.5); opacity: 0; }
+        }
+        .pulse-point::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background-color: #ffa929;
+            animation: pulse-ring 2s cubic-bezier(0.455, 0.03, 0.515, 0.955) infinite;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md selection:bg-primary-container selection:text-on-primary-container">
+<!-- Section 1: Glassmorphic Header -->
+<header class="fixed top-0 left-0 right-0 z-50 flex items-center justify-center h-20 px-margin-mobile md:px-margin-desktop bg-white/70 backdrop-blur-xl transition-all duration-300">
+<nav class="max-w-[1440px] w-full flex justify-between items-center h-full">
+<div class="flex items-center gap-base">
+<span class="font-headline-sm text-headline-sm font-bold text-primary tracking-tight">YOKA</span>
+</div>
+<ul class="hidden md:flex gap-lg font-body-md text-on-surface-variant">
+<li><a class="hover:text-primary transition-colors pb-1" href="#">Classes</a></li>
+<li><a class="hover:text-primary transition-colors pb-1" href="#">Workshops</a></li>
+<li><a class="hover:text-primary transition-colors pb-1" href="#">Retreats</a></li>
+<li><a class="hover:text-primary transition-colors pb-1" href="#">About</a></li>
+</ul>
+<div class="flex items-center gap-md">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">dark_mode</button>
+<a class="hidden sm:block border-2 border-primary text-primary font-label-md px-md py-2 rounded-full hover:bg-primary hover:text-white transition-all duration-300" href="#">Yoga Quiz</a>
+<button class="md:hidden material-symbols-outlined">menu</button>
+</div>
+</nav>
+</header>
+<!-- Section 2: Immersive Hero -->
+<section class="relative min-h-screen flex items-center pt-20 overflow-hidden">
+<!-- Hero Background Image -->
+<div class="absolute inset-0 z-0">
+<div class="w-full h-full bg-cover bg-right md:bg-center" data-alt="A professional high-resolution photo of a skilled yogi performing a perfect Scorpion pose (Vrischikasana) on a warm natural wood deck. The scene is bathed in the soft, ethereal golden light of a sunrise over a calm ocean horizon. The aesthetic is luxurious and serene, emphasizing tranquility and strength. High-key lighting highlights the muscular definition and focused expression of the practitioner, reflecting a premium wellness brand identity." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAu1AG7jSYdB-Rckyk1DLRfpwdX3EiXKKVYImdIT03WrzepVtp-Gz9DQ3Jez5Fh0aVzQmD3_EUC6t7KX1QWpH1zfqIpepF-Kl7vhoSR_9JUEwYufKeMPyKawKJOL09icG8clOG4lBc12exDIwuRTNdV2PGgnisMVOHFzkB45r5bIyuG6bRim5QVGGM52DcvZtlPjwYECxRk_7heZfEU5VQ3NcsD_mbWgf2jRCXfNPqzWFjtHsQle_PuG8ZtSDQEFW0xsW9BsGmSAGFZ')">
+</div>
+<div class="absolute inset-0 bg-gradient-to-r from-white/40 via-transparent to-transparent"></div>
+</div>
+<div class="relative z-10 w-full max-w-[1440px] mx-auto px-margin-mobile md:px-margin-desktop">
+<div class="max-w-xl p-lg rounded-3xl glass-card tonal-shadow border border-white/40 animate-fade-in-up">
+<h1 class="font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface mb-md">
+                    Elevate Your Being <span class="text-primary italic">with YOKA</span>
+</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-lg leading-relaxed">
+                    Join a community of high-end practitioners in a journey toward digital serenity and physical mastery. Experience premium wellness redefined.
+                </p>
+<div class="flex flex-col sm:flex-row gap-md">
+<button class="bg-primary-container text-on-primary-container font-label-md px-xl py-md rounded-full glow-gold transition-all duration-300 active:scale-95 shadow-lg">
+                        Start Practice Now
+                    </button>
+<button class="border-2 border-outline text-on-surface font-label-md px-xl py-md rounded-full hover:bg-white/50 transition-all duration-300 active:scale-95">
+                        Take Yoga Quiz
+                    </button>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 3: Benefits Grid -->
+<section class="py-xl px-margin-mobile md:px-margin-desktop max-w-[1440px] mx-auto">
+<div class="text-center mb-xl">
+<h2 class="font-display-lg text-display-lg-mobile md:text-headline-md text-on-surface mb-xs">Harmonious Growth</h2>
+<p class="font-body-md text-on-surface-variant max-w-2xl mx-auto">Discover the four pillars of the YOKA experience, designed to align your physical energy with spiritual calm.</p>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter">
+<!-- Physical -->
+<div class="bg-surface-container-low p-lg rounded-3xl hover-lift group border border-transparent hover:border-primary-fixed">
+<div class="w-12 h-12 rounded-2xl bg-secondary-container flex items-center justify-center mb-md group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-on-secondary-container">fitness_center</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-sm">Physical</h3>
+<p class="font-body-md text-on-surface-variant">Sculpt strength and flexibility through precision-guided flows and anatomical focus.</p>
+</div>
+<!-- Mental -->
+<div class="bg-surface-container-low p-lg rounded-3xl hover-lift group border border-transparent hover:border-primary-fixed">
+<div class="w-12 h-12 rounded-2xl bg-tertiary-fixed flex items-center justify-center mb-md group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-on-tertiary-fixed">self_improvement</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-sm">Mental</h3>
+<p class="font-body-md text-on-surface-variant">Cultivate razor-sharp focus and deep cognitive clarity with breath-synchronized movement.</p>
+</div>
+<!-- Spiritual -->
+<div class="bg-surface-container-low p-lg rounded-3xl hover-lift group border border-transparent hover:border-primary-fixed">
+<div class="w-12 h-12 rounded-2xl bg-primary-fixed flex items-center justify-center mb-md group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-on-primary-fixed">auto_awesome</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-sm">Spiritual</h3>
+<p class="font-body-md text-on-surface-variant">Connect with your inner narrative through meditative pauses and transcendental soundscapes.</p>
+</div>
+<!-- Lifestyle -->
+<div class="bg-surface-container-low p-lg rounded-3xl hover-lift group border border-transparent hover:border-primary-fixed">
+<div class="w-12 h-12 rounded-2xl bg-surface-variant flex items-center justify-center mb-md group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-on-surface-variant">eco</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-sm">Lifestyle</h3>
+<p class="font-body-md text-on-surface-variant">Integrate zen principles into your modern daily routine for sustained, effortless vitality.</p>
+</div>
+</div>
+</section>
+<!-- Section 4: Interactive Tutorial Stepper -->
+<section class="py-xl bg-surface-container-lowest overflow-hidden">
+<div class="max-w-[1440px] mx-auto px-margin-mobile md:px-margin-desktop">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-xl items-center">
+<!-- Stepper Navigation -->
+<div class="lg:col-span-4 flex flex-col gap-lg">
+<div class="border-l-4 border-primary pl-md">
+<span class="font-label-sm text-primary">STEP 01</span>
+<h3 class="font-headline-md text-on-surface mt-xs">Downward Dog</h3>
+<p class="font-body-md text-on-surface-variant mt-sm">Adho Mukha Svanasana. The cornerstone of restorative flow.</p>
+</div>
+<div class="border-l-4 border-outline-variant pl-md opacity-40 hover:opacity-100 transition-opacity cursor-pointer">
+<span class="font-label-sm text-on-surface-variant">STEP 02</span>
+<h4 class="font-headline-sm text-on-surface mt-xs">Warrior II</h4>
+</div>
+<div class="border-l-4 border-outline-variant pl-md opacity-40 hover:opacity-100 transition-opacity cursor-pointer">
+<span class="font-label-sm text-on-surface-variant">STEP 03</span>
+<h4 class="font-headline-sm text-on-surface mt-xs">Tree Pose</h4>
+</div>
+</div>
+<!-- Tutorial Visuals -->
+<div class="lg:col-span-8 relative">
+<div class="relative rounded-3xl overflow-hidden shadow-2xl bg-surface-dim aspect-video group">
+<img class="w-full h-full object-cover grayscale-[20%] group-hover:grayscale-0 transition-all duration-700" data-alt="A studio-lit instructional photo of a yoga instructor demonstrating a perfect Downward Dog pose. Overlayed are clean, minimalist geometric white lines indicating correct alignment angles for the spine and limbs. The background is a minimalist luxury yoga studio with light wood floors and soft neutral walls. Subtle glowing gold points pulse at the hands, hips, and heels to indicate focus areas for weight distribution." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD_k6vcaeyqUACLv202vYmz0pQP2fBTcya8WAzrjdw4j8PlCJrBrZPqEuY17d8mDPsAbUeyZTowVFPg72u99PKR3ufogv9iNXKf251jE97m6PFf-h8Un5HPrqRldkhYVyHdRlE4dNkwp1f8Yld7l16eMNUKHY9iOuvegpQTOm7t_fS0kfnXFl8SAtihkVbg61tqXmUbATlhAvoz4OxwLrO9FMld0-eR7IdS5C1diegadrtY2XdS6gTfjoBeNIs_vWvmU8jJ_6IKgwa2"/>
+<!-- Pulse Points -->
+<div class="absolute top-1/4 left-1/2 w-4 h-4 bg-primary rounded-full pulse-point" style="left: 45%; top: 20%;"></div>
+<div class="absolute bottom-1/4 left-1/4 w-4 h-4 bg-primary rounded-full pulse-point" style="left: 20%; top: 75%;"></div>
+<div class="absolute bottom-1/4 right-1/4 w-4 h-4 bg-primary rounded-full pulse-point" style="right: 25%; top: 80%;"></div>
+</div>
+<!-- Floating Tip Boxes -->
+<div class="mt-lg flex flex-col sm:flex-row gap-md">
+<div class="flex-1 bg-error-container/30 border border-error/20 p-md rounded-2xl flex items-start gap-sm backdrop-blur-sm">
+<span class="material-symbols-outlined text-error mt-xs">cancel</span>
+<div>
+<p class="font-label-md text-error mb-xs">Common Mistakes</p>
+<p class="font-body-md text-on-surface-variant">Rounding the upper back or locking the knees too tightly.</p>
+</div>
+</div>
+<div class="flex-1 bg-tertiary-container/10 border border-tertiary/20 p-md rounded-2xl flex items-start gap-sm backdrop-blur-sm">
+<span class="material-symbols-outlined text-tertiary mt-xs">check_circle</span>
+<div>
+<p class="font-label-md text-tertiary mb-xs">Correct Method</p>
+<p class="font-body-md text-on-surface-variant">Spread fingers wide, press heels toward the mat, and lengthen the tailbone.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 5: Membership Plans -->
+<section class="py-xl px-margin-mobile md:px-margin-desktop bg-surface-container-low relative">
+<div class="absolute inset-0 overflow-hidden opacity-20 pointer-events-none">
+<div class="absolute -top-24 -left-24 w-96 h-96 bg-primary-fixed-dim rounded-full blur-[120px]"></div>
+<div class="absolute -bottom-24 -right-24 w-96 h-96 bg-secondary-fixed-dim rounded-full blur-[120px]"></div>
+</div>
+<div class="max-w-[1440px] mx-auto relative z-10">
+<div class="text-center mb-xl">
+<h2 class="font-display-lg text-display-lg-mobile md:text-headline-md text-on-surface mb-xs">Studio Access</h2>
+<p class="font-body-md text-on-surface-variant">Tiered memberships for every stage of your practice.</p>
+</div>
+<div class="flex flex-col md:flex-row justify-center items-stretch gap-lg max-w-4xl mx-auto">
+<!-- Basic Plan -->
+<div class="flex-1 bg-white p-lg rounded-[2rem] shadow-sm border border-outline-variant/30 flex flex-col hover:border-outline-variant transition-colors">
+<span class="font-label-sm text-on-surface-variant uppercase tracking-widest mb-md">Essential Flow</span>
+<div class="mb-lg">
+<span class="font-display-lg text-headline-md text-on-surface">$49</span>
+<span class="text-on-surface-variant">/month</span>
+</div>
+<ul class="flex flex-col gap-sm mb-xl flex-grow">
+<li class="flex items-center gap-xs text-on-surface-variant">
+<span class="material-symbols-outlined text-primary scale-75">check</span> 8 Classes per month
+                        </li>
+<li class="flex items-center gap-xs text-on-surface-variant">
+<span class="material-symbols-outlined text-primary scale-75">check</span> Digital portal access
+                        </li>
+<li class="flex items-center gap-xs text-on-surface-variant">
+<span class="material-symbols-outlined text-primary scale-75">check</span> Studio mats provided
+                        </li>
+</ul>
+<button class="w-full py-md rounded-full border-2 border-outline text-on-surface font-label-md hover:bg-surface-container transition-all">Select Plan</button>
+</div>
+<!-- Premium Plan -->
+<div class="flex-1 bg-white p-lg rounded-[2rem] shadow-2xl border-2 border-primary-container flex flex-col relative scale-105 z-20">
+<div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-primary-container text-on-primary-container px-md py-1 rounded-full font-label-sm whitespace-nowrap shadow-md">
+                        RECOMMENDED
+                    </div>
+<span class="font-label-sm text-primary uppercase tracking-widest mb-md">Infinite Serenity</span>
+<div class="mb-lg">
+<span class="font-display-lg text-headline-md text-on-surface">$129</span>
+<span class="text-on-surface-variant">/month</span>
+</div>
+<ul class="flex flex-col gap-sm mb-xl flex-grow">
+<li class="flex items-center gap-xs text-on-surface">
+<span class="material-symbols-outlined text-primary scale-75">check</span> Unlimited studio classes
+                        </li>
+<li class="flex items-center gap-xs text-on-surface">
+<span class="material-symbols-outlined text-primary scale-75">check</span> All advanced workshops
+                        </li>
+<li class="flex items-center gap-xs text-on-surface">
+<span class="material-symbols-outlined text-primary scale-75">check</span> Private 1-on-1 monthly flow
+                        </li>
+<li class="flex items-center gap-xs text-on-surface">
+<span class="material-symbols-outlined text-primary scale-75">check</span> Exclusive retreat discounts
+                        </li>
+</ul>
+<button class="w-full py-md rounded-full bg-primary-container text-on-primary-container font-label-md glow-gold transition-all shadow-lg active:scale-95">Go Unlimited</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer class="bg-surface-container-low border-t border-outline-variant/30 py-md px-margin-mobile md:px-margin-desktop">
+<div class="max-w-[1440px] mx-auto flex flex-col md:flex-row justify-between items-center gap-md">
+<div class="flex flex-col items-center md:items-start">
+<span class="font-headline-sm text-headline-sm text-on-surface font-bold tracking-tight mb-xs">YOKA</span>
+<p class="font-label-sm text-on-surface-variant">© 2024 PranaFlow Wellness. Designed for Serenity.</p>
+</div>
+<div class="flex gap-lg font-label-sm text-on-surface-variant">
+<a class="hover:text-tertiary transition-colors" href="#">Privacy Policy</a>
+<a class="hover:text-tertiary transition-colors" href="#">Terms of Service</a>
+<a class="hover:text-tertiary transition-colors" href="#">Studio Guidelines</a>
+<a class="hover:text-tertiary transition-colors" href="#">Contact</a>
+</div>
+<div class="flex gap-md">
+<a class="w-10 h-10 rounded-full border border-outline-variant flex items-center justify-center hover:bg-primary-container hover:text-white transition-all" href="#">
+<span class="material-symbols-outlined scale-75">share</span>
+</a>
+<a class="w-10 h-10 rounded-full border border-outline-variant flex items-center justify-center hover:bg-primary-container hover:text-white transition-all" href="#">
+<span class="material-symbols-outlined scale-75">mail</span>
+</a>
+</div>
+</div>
+</footer>
+<script>
+        // Simple scroll effect for header
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 50) {
+                header.classList.add('h-16', 'shadow-md');
+                header.classList.remove('h-20');
+            } else {
+                header.classList.remove('h-16', 'shadow-md');
+                header.classList.add('h-20');
+            }
+        });
+
+        // Intersection Observer for fade-in animations
+        const observerOptions = {
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-in', 'fade-in', 'slide-in-from-bottom-10');
+                    entry.target.style.opacity = '1';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('section > div').forEach(el => {
+            el.style.opacity = '0';
+            el.classList.add('transition-all', 'duration-700', 'ease-out');
+            observer.observe(el);
+        });
+    </script>
+</body></html>
