@@ -1,5 +1,6 @@
 const express = require('express');
 const line = require('@line/bot-sdk');
+const fs = require('fs');
 const { addMemberStore } = require('./members');
 require('dotenv').config();
 
@@ -8,10 +9,33 @@ const config = {
   channelSecret: process.env.LINE_CHANNEL_SECRET || ''
 };
 
-const app = express();
+const SESSIONS_FILE = '/tmp/yoka_user_sessions.json';
 
-// In-memory conversation state for LINE OA user registration
-const userSessions = new Map();
+// Helper to load sessions from file / memory
+function loadSessions() {
+  try {
+    if (fs.existsSync(SESSIONS_FILE)) {
+      const raw = fs.readFileSync(SESSIONS_FILE, 'utf8');
+      const arr = JSON.parse(raw);
+      return new Map(arr);
+    }
+  } catch (err) {
+    console.error('Error reading sessions file:', err);
+  }
+  return new Map();
+}
+
+// Helper to save sessions to file
+function saveSessions(sessionsMap) {
+  try {
+    const arr = Array.from(sessionsMap.entries());
+    fs.writeFileSync(SESSIONS_FILE, JSON.stringify(arr, null, 2), 'utf8');
+  } catch (err) {
+    console.error('Error writing sessions file:', err);
+  }
+}
+
+const app = express();
 
 // Safe body parser for Express & Vercel Serverless environment
 app.use((req, res, next) => {
@@ -65,6 +89,7 @@ app.post('/api/webhook', async (req, res) => {
 // Handle individual LINE events
 async function handleEvent(event) {
   const userId = (event.source && event.source.userId) ? event.source.userId : 'default_user';
+  const userSessions = loadSessions();
 
   // Handle Image messages for registration photo step
   if (event.type === 'message' && event.message.type === 'image') {
@@ -72,6 +97,8 @@ async function handleEvent(event) {
     if (session && session.step === 'AWAITING_PHOTO') {
       session.data.avatarUrl = 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=400&q=80';
       session.step = 'CONFIRMATION';
+      userSessions.set(userId, session);
+      saveSessions(userSessions);
 
       const replyText = `📋 สรุปข้อมูลการสมัครสมาชิก YOKA Studio:\n\n` +
         `👤 Username: ${session.data.username}\n` +
@@ -96,7 +123,44 @@ async function handleEvent(event) {
   // Cancel command anytime
   if (lowerText === 'ยกเลิก' || lowerText === 'cancel') {
     userSessions.delete(userId);
+    saveSessions(userSessions);
     return sendReply(event, '❌ ยกเลิกขั้นตอนการสมัครสมาชิกเรียบร้อยแล้วครับ คุณสามารถเลือกดูข้อมูลคลาสหรือพิมพ์ "สมัครสมาชิก" เพื่อเริ่มต้นใหม่ได้ตลอดเวลาครับ');
+  }
+
+  // One-Shot Quick Registration Command (e.g. "สมัครสมาชิก puri, หลวงพี่ภูริ CTDM, 0812345678, ไทย, กรุงเทพ")
+  if ((lowerText.startsWith('สมัครสมาชิก ') || lowerText.startsWith('สมัคร ')) && userText.includes(',')) {
+    const content = userText.replace(/^(สมัครสมาชิก|สมัคร)\s+/i, '');
+    const parts = content.split(',').map(s => s.trim());
+
+    if (parts.length >= 2) {
+      const username = parts[0] || 'yoka_user';
+      const fullName = parts[1] || 'ผู้สมัครสมาชิก';
+      const phone = parts[2] || 'ไม่ระบุ';
+      const country = parts[3] || 'ไทย';
+      const province = parts[4] || 'กรุงเทพมหานคร';
+
+      const newMember = addMemberStore({
+        lineUserId: userId,
+        username,
+        fullName,
+        phone,
+        country,
+        province,
+        avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80'
+      });
+
+      userSessions.delete(userId);
+      saveSessions(userSessions);
+
+      const successText = `🎉 ยินดีต้อนรับคุณ ${newMember.fullName} สู่ YOKA Yoga Studio!\n\n` +
+        `การสมัครสมาชิกของคุณเสร็จสมบูรณ์เรียบร้อยแล้วครับ 🟢\n` +
+        `• Username: ${newMember.username}\n` +
+        `• รหัสสมาชิก: ${newMember.id}\n\n` +
+        `คุณสามารถเข้าดูคลาสเรียน และหน้า Admin สรุปรายชื่อสมาชิกเรียลไทม์ได้ที่ลิงก์นี้ครับ:\n` +
+        `https://purivaro.github.io/yoka/admin.html`;
+
+      return sendReply(event, successText);
+    }
   }
 
   // Check if user is currently in a registration state machine
@@ -106,16 +170,22 @@ async function handleEvent(event) {
     if (session.step === 'AWAITING_USERNAME') {
       session.data.username = userText;
       session.step = 'AWAITING_FULLNAME';
+      userSessions.set(userId, session);
+      saveSessions(userSessions);
       return sendReply(event, `✅ บันทึก Username: "${userText}" เรียบร้อยครับ\n\nขั้นตอนที่ 2/5:\nกรุณาระบุ ชื่อ-นามสกุล ของคุณ (เช่น สมชาย ใจดี)`);
 
     } else if (session.step === 'AWAITING_FULLNAME') {
       session.data.fullName = userText;
       session.step = 'AWAITING_PHONE';
+      userSessions.set(userId, session);
+      saveSessions(userSessions);
       return sendReply(event, `✅ บันทึกชื่อ: "${userText}" เรียบร้อยครับ\n\nขั้นตอนที่ 3/5:\nกรุณาระบุ เบอร์โทรศัพท์ สำหรับติดต่อ (เช่น 081-234-5678)`);
 
     } else if (session.step === 'AWAITING_PHONE') {
       session.data.phone = userText;
       session.step = 'AWAITING_LOCATION';
+      userSessions.set(userId, session);
+      saveSessions(userSessions);
       return sendReply(event, `✅ บันทึกเบอร์โทรศัพท์เรียบร้อยครับ\n\nขั้นตอนที่ 4/5:\nกรุณาระบุ ประเทศ และ จังหวัด ของคุณ\n(ตัวอย่าง: "ไทย, กรุงเทพมหานคร" หรือ "ไทย, เชียงใหม่" หรือ "ญี่ปุ่น, โตเกียว")`);
 
     } else if (session.step === 'AWAITING_LOCATION') {
@@ -131,12 +201,16 @@ async function handleEvent(event) {
       session.data.country = country;
       session.data.province = province;
       session.step = 'AWAITING_PHOTO';
+      userSessions.set(userId, session);
+      saveSessions(userSessions);
 
       return sendReply(event, `✅ บันทึกสถานที่: ${country} (${province}) เรียบร้อยครับ\n\nขั้นตอนที่ 5/5:\nกรุณาส่ง รูปถ่าย ของคุณในแชทนี้\nหรือพิมพ์ "ใช้รูปโปรไฟล์" เพื่อใช้รูปจากบัญชี LINE ของคุณ`);
 
     } else if (session.step === 'AWAITING_PHOTO') {
       session.data.avatarUrl = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80';
       session.step = 'CONFIRMATION';
+      userSessions.set(userId, session);
+      saveSessions(userSessions);
 
       const replyText = `📋 สรุปข้อมูลการสมัครสมาชิก YOKA Studio:\n\n` +
         `👤 Username: ${session.data.username}\n` +
@@ -162,6 +236,7 @@ async function handleEvent(event) {
         });
 
         userSessions.delete(userId);
+        saveSessions(userSessions);
 
         const successText = `🎉 ยินดีต้อนรับคุณ ${newMember.fullName} สู่ YOKA Yoga Studio!\n\n` +
           `การสมัครสมาชิกของคุณเสร็จสมบูรณ์เรียบร้อยแล้วครับ 🟢\n` +
@@ -178,7 +253,7 @@ async function handleEvent(event) {
   // Trigger to start registration flow
   if (
     lowerText.includes('สมัครสมาชิก') ||
-    lowerText.includes('สมัคร') ||
+    lowerText === 'สมัคร' ||
     lowerText === 'register' ||
     lowerText === 'join'
   ) {
@@ -186,6 +261,7 @@ async function handleEvent(event) {
       step: 'AWAITING_USERNAME',
       data: { username: '', fullName: '', phone: '', country: '', province: '', avatarUrl: '' }
     });
+    saveSessions(userSessions);
 
     const startText = `📝 ยินดีต้อนรับสู่ระบบสมัครสมาชิก YOKA Yoga Studio!\n\n` +
       `ขั้นตอนที่ 1/5:\n` +
