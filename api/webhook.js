@@ -9,20 +9,8 @@ const config = {
 
 const app = express();
 
-// Helper middleware for LINE signature verification
-const lineMiddleware = (req, res, next) => {
-  if (!config.channelSecret || !config.channelAccessToken) {
-    console.warn('LINE_CHANNEL_SECRET or LINE_CHANNEL_ACCESS_TOKEN is missing in environment variables.');
-  }
-
-  // If credentials are present, use official middleware
-  if (config.channelSecret && config.channelAccessToken) {
-    return line.middleware(config)(req, res, next);
-  }
-
-  // Fallback if testing without keys locally
-  express.json()(req, res, next);
-};
+// Middleware to parse body as JSON
+app.use(express.json());
 
 // GET endpoint to quickly check server health
 app.get('/api/webhook', (req, res) => {
@@ -30,14 +18,31 @@ app.get('/api/webhook', (req, res) => {
 });
 
 // POST endpoint for receiving LINE events
-app.post('/api/webhook', lineMiddleware, async (req, res) => {
+app.post('/api/webhook', async (req, res) => {
+  // If LINE Channel Secret is set, validate signature
+  if (config.channelSecret) {
+    const signature = req.headers['x-line-signature'];
+    if (!signature) {
+      return res.status(401).json({ status: 'error', message: 'Missing x-line-signature header' });
+    }
+
+    const rawBody = typeof req.body === 'string' ? req.body : JSON.stringify(req.body);
+    const isValid = line.validateSignature(rawBody, config.channelSecret, signature);
+
+    if (!isValid) {
+      return res.status(403).json({ status: 'error', message: 'Invalid x-line-signature' });
+    }
+  }
+
+  // Handle events
   try {
-    const events = req.body.events || [];
+    const body = typeof req.body === 'string' ? JSON.parse(req.body) : (req.body || {});
+    const events = body.events || [];
     const results = await Promise.all(events.map(handleEvent));
-    res.status(200).json(results);
+    return res.status(200).json(results);
   } catch (err) {
     console.error('Error handling LINE Webhook event:', err);
-    res.status(500).json({ status: 'error', message: err.message });
+    return res.status(500).json({ status: 'error', message: err.message });
   }
 });
 
