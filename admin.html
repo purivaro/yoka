@@ -498,7 +498,7 @@
 
       const API_URL = (window.location.hostname.includes('vercel.app'))
         ? `/api/members/${id}`
-        : `https://yoka-six.vercel.app/api/members?id=${id}`;
+        : `https://yoka-six.vercel.app/api/members/${id}`;
 
       try {
         const res = await fetch(API_URL, { method: 'DELETE' });
