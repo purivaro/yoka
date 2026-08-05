@@ -278,7 +278,7 @@
       document.documentElement.classList.toggle('dark');
     });
 
-    // Fetch Members Data from Backend API / Vercel API
+    // Fetch Members Data from Backend API / Vercel API / Static File
     async function fetchMembers() {
       const refreshIcon = document.getElementById('refresh-icon');
       refreshIcon.classList.add('animate-spin');
@@ -295,92 +295,25 @@
           allMembers = data.members || [];
           localStorage.setItem('yoka_members_cache', JSON.stringify(allMembers));
         } else {
-          throw new Error('Non-OK API response');
+          throw new Error('API return non-200');
         }
       } catch (err) {
-        console.warn('Failed to fetch from Vercel API, loading cache:', err);
-        const cached = localStorage.getItem('yoka_members_cache');
-        allMembers = cached ? JSON.parse(cached) : getFallbackMembers();
+        console.warn('Failed to fetch from Vercel API, attempting static data/members.json:', err);
+        try {
+          const staticRes = await fetch('data/members.json');
+          if (staticRes.ok) {
+            allMembers = await staticRes.json();
+          } else {
+            throw new Error('Static file non-200');
+          }
+        } catch (err2) {
+          const cached = localStorage.getItem('yoka_members_cache');
+          allMembers = cached ? JSON.parse(cached) : [];
+        }
       } finally {
         setTimeout(() => refreshIcon.classList.remove('animate-spin'), 600);
         renderDashboard();
       }
-    }
-
-    // Fallback Initial Mock Members
-    function getFallbackMembers() {
-      return [
-        {
-          id: 'mem_1001',
-          username: 'mindful_somchai',
-          fullName: 'สมชาย วงศ์สว่าง',
-          phone: '081-987-6543',
-          country: 'ไทย',
-          province: 'กรุงเทพมหานคร',
-          avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80',
-          createdAt: '2026-08-05T08:30:00.000Z'
-        },
-        {
-          id: 'mem_1002',
-          username: 'nicha_yoga',
-          fullName: 'นิชาภา กิจเจริญ',
-          phone: '089-456-7890',
-          country: 'ไทย',
-          province: 'เชียงใหม่',
-          avatarUrl: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=400&q=80',
-          createdAt: '2026-08-05T09:15:00.000Z'
-        },
-        {
-          id: 'mem_1003',
-          username: 'phuket_zen',
-          fullName: 'อนุชา รัตนเพชร',
-          phone: '086-111-2233',
-          country: 'ไทย',
-          province: 'ภูเก็ต',
-          avatarUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80',
-          createdAt: '2026-08-05T10:05:00.000Z'
-        },
-        {
-          id: 'mem_1004',
-          username: 'sarah_uk',
-          fullName: 'Sarah Jenkins',
-          phone: '+44 7700 900077',
-          country: 'สหราชอาณาจักร',
-          province: 'ลอนดอน',
-          avatarUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=400&q=80',
-          createdAt: '2026-08-05T11:20:00.000Z'
-        },
-        {
-          id: 'mem_1005',
-          username: 'kenji_tokyo',
-          fullName: 'Kenji Sato',
-          phone: '+81 90 1234 5678',
-          country: 'ญี่ปุ่น',
-          province: 'โตเกียว',
-          avatarUrl: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80',
-          createdAt: '2026-08-05T12:00:00.000Z'
-        },
-        {
-          id: 'mem_1006',
-          username: 'chonburi_flow',
-          fullName: 'กมลวรรณ สุขเสริฐ',
-          phone: '082-333-4455',
-          country: 'ไทย',
-          province: 'ชลบุรี',
-          avatarUrl: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=400&q=80',
-          createdAt: '2026-08-05T13:10:00.000Z'
-        },
-        {
-          id: 'mem_1007',
-          username: 'korat_yogi',
-          fullName: 'ธนากร ศรีสมบูรณ์',
-          phone: '085-777-8899',
-          country: 'ไทย',
-          province: 'นครราชสีมา',
-          avatarUrl: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=400&q=80',
-          createdAt: '2026-08-05T13:45:00.000Z'
-        }
-      ];
     }
 
     // Main Render Function

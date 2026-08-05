@@ -4,105 +4,38 @@ const path = require('path');
 require('dotenv').config();
 
 const TMP_FILE = '/tmp/yoka_members.json';
+const REPO_FILE = path.join(__dirname, '../data/members.json');
 
-// Initial seed data
-const initialSeed = [
-  {
-    id: 'mem_1001',
-    lineUserId: 'U99112233',
-    username: 'mindful_somchai',
-    fullName: 'สมชาย วงศ์สว่าง',
-    phone: '081-987-6543',
-    country: 'ไทย',
-    province: 'กรุงเทพมหานคร',
-    avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80',
-    createdAt: '2026-08-05T08:30:00.000Z'
-  },
-  {
-    id: 'mem_1002',
-    lineUserId: 'U88223344',
-    username: 'nicha_yoga',
-    fullName: 'นิชาภา กิจเจริญ',
-    phone: '089-456-7890',
-    country: 'ไทย',
-    province: 'เชียงใหม่',
-    avatarUrl: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=400&q=80',
-    createdAt: '2026-08-05T09:15:00.000Z'
-  },
-  {
-    id: 'mem_1003',
-    lineUserId: 'U77334455',
-    username: 'phuket_zen',
-    fullName: 'อนุชา รัตนเพชร',
-    phone: '086-111-2233',
-    country: 'ไทย',
-    province: 'ภูเก็ต',
-    avatarUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80',
-    createdAt: '2026-08-05T10:05:00.000Z'
-  },
-  {
-    id: 'mem_1004',
-    lineUserId: 'U66445566',
-    username: 'sarah_uk',
-    fullName: 'Sarah Jenkins',
-    phone: '+44 7700 900077',
-    country: 'สหราชอาณาจักร',
-    province: 'ลอนดอน',
-    avatarUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=400&q=80',
-    createdAt: '2026-08-05T11:20:00.000Z'
-  },
-  {
-    id: 'mem_1005',
-    lineUserId: 'U55556677',
-    username: 'kenji_tokyo',
-    fullName: 'Kenji Sato',
-    phone: '+81 90 1234 5678',
-    country: 'ญี่ปุ่น',
-    province: 'โตเกียว',
-    avatarUrl: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80',
-    createdAt: '2026-08-05T12:00:00.000Z'
-  },
-  {
-    id: 'mem_1006',
-    lineUserId: 'U44667788',
-    username: 'chonburi_flow',
-    fullName: 'กมลวรรณ สุขเสริฐ',
-    phone: '082-333-4455',
-    country: 'ไทย',
-    province: 'ชลบุรี',
-    avatarUrl: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=400&q=80',
-    createdAt: '2026-08-05T13:10:00.000Z'
-  },
-  {
-    id: 'mem_1007',
-    lineUserId: 'U33778899',
-    username: 'korat_yogi',
-    fullName: 'ธนากร ศรีสมบูรณ์',
-    phone: '085-777-8899',
-    country: 'ไทย',
-    province: 'นครราชสีมา',
-    avatarUrl: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=400&q=80',
-    createdAt: '2026-08-05T13:45:00.000Z'
-  }
-];
-
-// Helper to load members
+// Helper to load members (reads /tmp first, then repo file)
 function loadMembers() {
   try {
     if (fs.existsSync(TMP_FILE)) {
       const data = fs.readFileSync(TMP_FILE, 'utf8');
       const parsed = JSON.parse(data);
-      if (Array.isArray(parsed) && parsed.length > 0) {
+      if (Array.isArray(parsed)) {
         return parsed;
       }
     }
   } catch (err) {
     console.error('Error loading /tmp/yoka_members.json:', err);
   }
-  return [...initialSeed];
+
+  try {
+    if (fs.existsSync(REPO_FILE)) {
+      const data = fs.readFileSync(REPO_FILE, 'utf8');
+      const parsed = JSON.parse(data);
+      if (Array.isArray(parsed)) {
+        return parsed;
+      }
+    }
+  } catch (err) {
+    console.error('Error loading data/members.json:', err);
+  }
+
+  return [];
 }
 
-// Helper to save members
+// Helper to save members to /tmp
 function saveMembers(members) {
   try {
     fs.writeFileSync(TMP_FILE, JSON.stringify(members, null, 2), 'utf8');
@@ -128,7 +61,7 @@ app.use((req, res, next) => {
 
 app.use(express.json());
 
-// Helper function to calculate stats
+// Calculate Stats
 function calculateStats(members) {
   const total = members.length;
   const countryCount = {};
