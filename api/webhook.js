@@ -9,7 +9,7 @@ const config = {
 
 const app = express();
 
-// Safe body parser for Express & Vercel Serverless environment
+// Middleware to safely parse body for Vercel Serverless environment
 app.use((req, res, next) => {
   if (req.body !== undefined) {
     return next();
@@ -26,17 +26,18 @@ app.use((req, res, next) => {
   });
 });
 
-// GET endpoint for health check
+// GET health check
 app.get('/api/webhook', (req, res) => {
   res.status(200).send('YOKA Yoga Studio - LINE OA Webhook is active!');
 });
 
-// POST endpoint for LINE Events
+// POST endpoint for receiving LINE events
 app.post('/api/webhook', async (req, res) => {
-  // If LINE Channel Secret is set, validate signature
+  // Signature Validation (if channelSecret is configured)
   if (config.channelSecret) {
     const signature = req.headers['x-line-signature'];
     if (!signature) {
+      console.warn('LINE request missing x-line-signature header');
       return res.status(401).json({ status: 'error', message: 'Missing x-line-signature header' });
     }
 
@@ -44,11 +45,12 @@ app.post('/api/webhook', async (req, res) => {
     const isValid = line.validateSignature(rawBody, config.channelSecret, signature);
 
     if (!isValid) {
+      console.warn('Invalid LINE signature');
       return res.status(403).json({ status: 'error', message: 'Invalid x-line-signature' });
     }
   }
 
-  // Handle incoming events
+  // Handle Events
   try {
     const body = typeof req.body === 'string' ? JSON.parse(req.body) : (req.body || {});
     const events = body.events || [];
@@ -60,7 +62,7 @@ app.post('/api/webhook', async (req, res) => {
   }
 });
 
-// Handle individual LINE events with dynamic website data
+// Handle individual LINE event
 async function handleEvent(event) {
   if (event.type !== 'message' || event.message.type !== 'text') {
     return Promise.resolve(null);
@@ -157,7 +159,7 @@ async function handleEvent(event) {
       `🌐 เว็บไซต์หลัก: https://purivaro.github.io/yoka/\n` +
       `💬 สอบถามข้อมูลเพิ่มเติม พิมพ์ข้อความสอบถามได้ตลอดเวลาครับ`;
 
-  // 6. ข้อความต้อนรับเริ่มต้น / คำตอบทั่วไป
+  // 6. ข้อความต้อนรับเริ่มต้น
   } else {
     replyText = `สวัสดีครับ 🙏 ยินดีต้อนรับสู่ YOKA Yoga Studio!\n\n` +
       `คุณสามารถพิมพ์คำถามสอบถามข้อมูลจากเว็บไซต์ของเราได้เลยครับ:\n` +
@@ -168,18 +170,28 @@ async function handleEvent(event) {
       `5️⃣ พิมพ์ "ติดต่อ" - ดูลิงก์เว็บไซต์และข้อมูลสตูดิโอ`;
   }
 
-  // If LINE Access Token is available, reply via Messaging API
+  // Reply back to LINE user
   if (config.channelAccessToken) {
-    const client = new line.messagingApi.MessagingApiClient({
-      channelAccessToken: config.channelAccessToken
-    });
-
-    return client.replyMessage({
-      replyToken: event.replyToken,
-      messages: [{ type: 'text', text: replyText }]
-    });
+    try {
+      if (line.messagingApi && line.messagingApi.MessagingApiClient) {
+        const client = new line.messagingApi.MessagingApiClient({
+          channelAccessToken: config.channelAccessToken
+        });
+        return await client.replyMessage({
+          replyToken: event.replyToken,
+          messages: [{ type: 'text', text: replyText }]
+        });
+      } else {
+        const client = new line.Client(config);
+        return await client.replyMessage(event.replyToken, [{ type: 'text', text: replyText }]);
+      }
+    } catch (err) {
+      console.error('Failed to send reply to LINE API:', err);
+      return Promise.resolve(null);
+    }
   } else {
-    console.log(`[Simulation Reply to ${event.replyToken}]:`, replyText);
+    console.warn('LINE_CHANNEL_ACCESS_TOKEN is missing! Cannot send reply back to LINE user.');
+    console.log(`[Simulated Reply for ${event.replyToken}]:`, replyText);
     return Promise.resolve({ replyToken: event.replyToken, replyText });
   }
 }
