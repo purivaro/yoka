@@ -1,8 +1,12 @@
 const express = require('express');
+const fs = require('fs');
+const path = require('path');
 require('dotenv').config();
 
-// In-memory data store for member registrations
-let membersStore = [
+const TMP_FILE = '/tmp/yoka_members.json';
+
+// Initial seed data
+const initialSeed = [
   {
     id: 'mem_1001',
     lineUserId: 'U99112233',
@@ -82,20 +86,57 @@ let membersStore = [
   }
 ];
 
+// Helper to load members
+function loadMembers() {
+  try {
+    if (fs.existsSync(TMP_FILE)) {
+      const data = fs.readFileSync(TMP_FILE, 'utf8');
+      const parsed = JSON.parse(data);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        return parsed;
+      }
+    }
+  } catch (err) {
+    console.error('Error loading /tmp/yoka_members.json:', err);
+  }
+  return [...initialSeed];
+}
+
+// Helper to save members
+function saveMembers(members) {
+  try {
+    fs.writeFileSync(TMP_FILE, JSON.stringify(members, null, 2), 'utf8');
+  } catch (err) {
+    console.error('Error writing /tmp/yoka_members.json:', err);
+  }
+}
+
+let membersStore = loadMembers();
+
 const app = express();
+
+// CORS Middleware
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, x-line-signature');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+  next();
+});
+
 app.use(express.json());
 
 // Helper function to calculate stats
 function calculateStats(members) {
   const total = members.length;
-
   const countryCount = {};
   const provinceCount = {};
 
   members.forEach(m => {
     const country = m.country || 'ไม่ระบุ';
     const province = m.province || 'ไม่ระบุ';
-
     countryCount[country] = (countryCount[country] || 0) + 1;
     provinceCount[province] = (provinceCount[province] || 0) + 1;
   });
@@ -109,6 +150,7 @@ function calculateStats(members) {
 
 // GET /api/members
 app.get('/api/members', (req, res) => {
+  membersStore = loadMembers();
   const stats = calculateStats(membersStore);
   res.status(200).json({
     success: true,
@@ -125,6 +167,8 @@ app.post('/api/members', (req, res) => {
     return res.status(400).json({ success: false, message: 'Missing required fields' });
   }
 
+  membersStore = loadMembers();
+
   const newMember = {
     id: `mem_${Date.now()}`,
     lineUserId: lineUserId || `user_${Date.now()}`,
@@ -138,6 +182,7 @@ app.post('/api/members', (req, res) => {
   };
 
   membersStore.unshift(newMember);
+  saveMembers(membersStore);
 
   res.status(201).json({
     success: true,
@@ -146,8 +191,10 @@ app.post('/api/members', (req, res) => {
   });
 });
 
-// Function to add member programmatically from webhook
+// Programmatic helper from Webhook
 function addMemberStore(memberData) {
+  membersStore = loadMembers();
+
   const newMember = {
     id: `mem_${Date.now()}`,
     lineUserId: memberData.lineUserId || `user_${Date.now()}`,
@@ -159,7 +206,9 @@ function addMemberStore(memberData) {
     avatarUrl: memberData.avatarUrl || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80',
     createdAt: new Date().toISOString()
   };
+
   membersStore.unshift(newMember);
+  saveMembers(membersStore);
   return newMember;
 }
 

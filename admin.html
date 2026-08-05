@@ -278,23 +278,29 @@
       document.documentElement.classList.toggle('dark');
     });
 
-    // Fetch Members Data from Backend API / Static Store
+    // Fetch Members Data from Backend API / Vercel API
     async function fetchMembers() {
       const refreshIcon = document.getElementById('refresh-icon');
       refreshIcon.classList.add('animate-spin');
 
+      // Use Vercel live backend URL when hosted on GitHub Pages or local file
+      const API_URL = (window.location.hostname.includes('vercel.app'))
+        ? '/api/members'
+        : 'https://yoka-six.vercel.app/api/members';
+
       try {
-        const res = await fetch('/api/members');
+        const res = await fetch(API_URL);
         if (res.ok) {
           const data = await res.json();
           allMembers = data.members || [];
+          localStorage.setItem('yoka_members_cache', JSON.stringify(allMembers));
         } else {
-          console.warn('API returned non-OK status, fallback to local store');
-          allMembers = getFallbackMembers();
+          throw new Error('Non-OK API response');
         }
       } catch (err) {
-        console.warn('Failed to fetch /api/members, fallback to local store:', err);
-        allMembers = getFallbackMembers();
+        console.warn('Failed to fetch from Vercel API, loading cache:', err);
+        const cached = localStorage.getItem('yoka_members_cache');
+        allMembers = cached ? JSON.parse(cached) : getFallbackMembers();
       } finally {
         setTimeout(() => refreshIcon.classList.remove('animate-spin'), 600);
         renderDashboard();

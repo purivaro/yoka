@@ -167,7 +167,7 @@ async function handleEvent(event) {
           `การสมัครสมาชิกของคุณเสร็จสมบูรณ์เรียบร้อยแล้วครับ 🟢\n` +
           `• Username: ${newMember.username}\n` +
           `• รหัสสมาชิก: ${newMember.id}\n\n` +
-          `คุณสามารถเข้าดูคลาสเรียน ตารางฝึก และหน้า Admin สรุปรายชื่อสมาชิกได้ที่เว็บไซต์หลัก:\n` +
+          `คุณสามารถเข้าดูคลาสเรียน และหน้า Admin สรุปรายชื่อสมาชิกเรียลไทม์ได้ที่ลิงก์นี้ครับ:\n` +
           `https://purivaro.github.io/yoka/admin.html`;
 
         return sendReply(event, successText);
