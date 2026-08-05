@@ -3,11 +3,15 @@
   "rewrites": [
     {
       "source": "/api/webhook",
-      "destination": "/api/webhook.js"
+      "destination": "/api/index.js"
     },
     {
       "source": "/api/members",
-      "destination": "/api/members.js"
+      "destination": "/api/index.js"
+    },
+    {
+      "source": "/api/members/(.*)",
+      "destination": "/api/index.js"
     }
   ]
 }
