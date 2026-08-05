@@ -111,7 +111,7 @@ function saveMembers(members) {
   }
 }
 
-let membersStore = loadMembers();
+const membersStore = loadMembers();
 
 const app = express();
 
@@ -150,7 +150,9 @@ function calculateStats(members) {
 
 // GET /api/members
 app.get('/api/members', (req, res) => {
-  membersStore = loadMembers();
+  const currentMembers = loadMembers();
+  membersStore.length = 0;
+  membersStore.push(...currentMembers);
   const stats = calculateStats(membersStore);
   res.status(200).json({
     success: true,
@@ -167,7 +169,7 @@ app.post('/api/members', (req, res) => {
     return res.status(400).json({ success: false, message: 'Missing required fields' });
   }
 
-  membersStore = loadMembers();
+  const currentMembers = loadMembers();
 
   const newMember = {
     id: `mem_${Date.now()}`,
@@ -181,8 +183,11 @@ app.post('/api/members', (req, res) => {
     createdAt: new Date().toISOString()
   };
 
-  membersStore.unshift(newMember);
-  saveMembers(membersStore);
+  currentMembers.unshift(newMember);
+  saveMembers(currentMembers);
+
+  membersStore.length = 0;
+  membersStore.push(...currentMembers);
 
   res.status(201).json({
     success: true,
@@ -193,7 +198,7 @@ app.post('/api/members', (req, res) => {
 
 // Programmatic helper from Webhook
 function addMemberStore(memberData) {
-  membersStore = loadMembers();
+  const currentMembers = loadMembers();
 
   const newMember = {
     id: `mem_${Date.now()}`,
@@ -207,8 +212,12 @@ function addMemberStore(memberData) {
     createdAt: new Date().toISOString()
   };
 
-  membersStore.unshift(newMember);
-  saveMembers(membersStore);
+  currentMembers.unshift(newMember);
+  saveMembers(currentMembers);
+
+  membersStore.length = 0;
+  membersStore.push(...currentMembers);
+
   return newMember;
 }
 

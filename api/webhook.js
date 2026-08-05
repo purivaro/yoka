@@ -120,16 +120,16 @@ async function handleEvent(event) {
   const userText = event.message.text.trim();
   const lowerText = userText.toLowerCase();
 
-  // Cancel command anytime
+  // 1. Cancel command anytime
   if (lowerText === 'ยกเลิก' || lowerText === 'cancel') {
     userSessions.delete(userId);
     saveSessions(userSessions);
     return sendReply(event, '❌ ยกเลิกขั้นตอนการสมัครสมาชิกเรียบร้อยแล้วครับ คุณสามารถเลือกดูข้อมูลคลาสหรือพิมพ์ "สมัครสมาชิก" เพื่อเริ่มต้นใหม่ได้ตลอดเวลาครับ');
   }
 
-  // One-Shot Quick Registration Command (e.g. "สมัครสมาชิก puri, หลวงพี่ภูริ CTDM, 0812345678, ไทย, กรุงเทพ")
-  if ((lowerText.startsWith('สมัครสมาชิก ') || lowerText.startsWith('สมัคร ')) && userText.includes(',')) {
-    const content = userText.replace(/^(สมัครสมาชิก|สมัคร)\s+/i, '');
+  // 2. One-Shot Quick Registration Command (e.g. "สมัครสมาชิก puri, หลวงพี่ภูริ CTDM, 0812345678, ไทย, กรุงเทพ")
+  if ((lowerText.startsWith('สมัครสมาชิก') || lowerText.startsWith('สมัคร')) && userText.includes(',')) {
+    const content = userText.replace(/^(สมัครสมาชิก|สมัคร)\s*/i, '');
     const parts = content.split(',').map(s => s.trim());
 
     if (parts.length >= 2) {
@@ -163,7 +163,28 @@ async function handleEvent(event) {
     }
   }
 
-  // Check if user is currently in a registration state machine
+  // 3. Trigger to start new registration flow (Resets any stale session)
+  if (
+    lowerText === 'สมัครสมาชิก' ||
+    lowerText === 'สมัคร' ||
+    lowerText === 'register' ||
+    lowerText === 'join'
+  ) {
+    userSessions.set(userId, {
+      step: 'AWAITING_USERNAME',
+      data: { username: '', fullName: '', phone: '', country: '', province: '', avatarUrl: '' }
+    });
+    saveSessions(userSessions);
+
+    const startText = `📝 ยินดีต้อนรับสู่ระบบสมัครสมาชิก YOKA Yoga Studio!\n\n` +
+      `ขั้นตอนที่ 1/5:\n` +
+      `กรุณาพิมพ์ Username ที่คุณต้องการใช้ (เช่น yoka_member1)\n\n` +
+      `(พิมพ์ "ยกเลิก" ได้ตลอดเวลาหากต้องการยกเลิกการสมัคร)`;
+
+    return sendReply(event, startText);
+  }
+
+  // 4. Continue existing interactive registration session
   const session = userSessions.get(userId);
 
   if (session) {
@@ -250,28 +271,7 @@ async function handleEvent(event) {
     }
   }
 
-  // Trigger to start registration flow
-  if (
-    lowerText.includes('สมัครสมาชิก') ||
-    lowerText === 'สมัคร' ||
-    lowerText === 'register' ||
-    lowerText === 'join'
-  ) {
-    userSessions.set(userId, {
-      step: 'AWAITING_USERNAME',
-      data: { username: '', fullName: '', phone: '', country: '', province: '', avatarUrl: '' }
-    });
-    saveSessions(userSessions);
-
-    const startText = `📝 ยินดีต้อนรับสู่ระบบสมัครสมาชิก YOKA Yoga Studio!\n\n` +
-      `ขั้นตอนที่ 1/5:\n` +
-      `กรุณาพิมพ์ Username ที่คุณต้องการใช้ (เช่น yoka_member1)\n\n` +
-      `(พิมพ์ "ยกเลิก" ได้ตลอดเวลาหากต้องการยกเลิกการสมัคร)`;
-
-    return sendReply(event, startText);
-  }
-
-  // 1. ถามเรื่องประเภท/จำนวนรูปแบบโยคะ
+  // 5. General Q&A Intent Handlers
   if (
     lowerText.includes('มีกี่แบบ') ||
     lowerText.includes('กี่ประเภท') ||
@@ -296,7 +296,6 @@ async function handleEvent(event) {
       `• การฝึกแบบดั้งเดิมที่มีระเบียบแบบแผนและลำดับท่าตายตัว ท้าทายสมาธิและร่างกายขั้นสูงสุด\n\n` +
       `🌐 ทำแบบทดสอบค้นหาโยคะที่ใช่หรือพิมพ์ "สมัครสมาชิก" เพื่อลงทะเบียนได้เลยครับ!\nhttps://purivaro.github.io/yoka/`;
 
-  // 2. ถามเรื่องสอนวิธีฝึกโยคะเบื้องต้น / ท่าโยคะ
   } else if (
     lowerText.includes('ท่าโยคะ') ||
     lowerText.includes('ท่าเบื้องต้น') ||
@@ -315,7 +314,6 @@ async function handleEvent(event) {
       `• จุดเน้น: เปิดหน้าอกขึ้น, กดไหล่ห่างจากหู, สะโพกแนบพื้น ช่วยสร้างความแข็งแรงให้กระดูกสันหลัง\n\n` +
       `💡 พิมพ์ "สมัครสมาชิก" เพื่อลงทะเบียนเรียนโยคะกับเราได้เลยครับ`;
 
-  // 3. ประโยชน์ของโยคะ
   } else if (
     lowerText.includes('ประโยชน์') ||
     lowerText.includes('ช่วยอะไร') ||
@@ -330,7 +328,6 @@ async function handleEvent(event) {
       `4. Lifestyle (การใช้ชีวิต): ช่วยให้หลับลึกขึ้นและปรับบุคลิกภาพให้ดีขึ้น\n\n` +
       `ฝึกเพียง 15 นาทีต่อวัน ก็เห็นผลลัพธ์ที่ดีขึ้นได้แล้วครับ!`;
 
-  // 4. ราคา / สมาชิก
   } else if (
     lowerText.includes('ราคา') ||
     lowerText.includes('สมาชิก') ||
@@ -347,7 +344,6 @@ async function handleEvent(event) {
       `• พูดคุยและถามตอบกับครูผู้สอนโดยตรง\n\n` +
       `👉 พิมพ์คำว่า "สมัครสมาชิก" ในแชทนี้เพื่อกรอกข้อมูลสมัครได้ทันทีครับ!`;
 
-  // 5. ติดต่อ / ที่อยู่ / เว็บไซต์
   } else if (
     lowerText.includes('ติดต่อ') ||
     lowerText.includes('เว็บ') ||
@@ -359,7 +355,6 @@ async function handleEvent(event) {
       `📊 หน้า Admin ดูรายชื่อสมาชิก: https://purivaro.github.io/yoka/admin.html\n\n` +
       `💬 พิมพ์ "สมัครสมาชิก" เพื่อสมัครสมาชิกผ่าน LINE OA ได้ทันทีครับ`;
 
-  // 6. ข้อความต้อนรับเริ่มต้น
   } else {
     replyText = `สวัสดีครับ 🙏 ยินดีต้อนรับสู่ YOKA Yoga Studio!\n\n` +
       `คุณสามารถสมัครสมาชิกผ่าน LINE OA หรือสอบถามข้อมูลได้เลยครับ:\n` +
