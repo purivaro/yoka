@@ -35,6 +35,30 @@ function saveSessions(sessionsMap) {
   }
 }
 
+// Helper to fetch REAL LINE Profile picture
+async function getLineProfilePic(userId, fallbackName) {
+  if (config.channelAccessToken && userId && userId !== 'default_user' && !userId.startsWith('test_')) {
+    try {
+      if (line.messagingApi && line.messagingApi.MessagingApiClient) {
+        const client = new line.messagingApi.MessagingApiClient({ channelAccessToken: config.channelAccessToken });
+        const profile = await client.getProfile(userId);
+        if (profile && profile.pictureUrl) {
+          return profile.pictureUrl;
+        }
+      } else {
+        const client = new line.Client(config);
+        const profile = await client.getProfile(userId);
+        if (profile && profile.pictureUrl) {
+          return profile.pictureUrl;
+        }
+      }
+    } catch (err) {
+      console.warn('Could not fetch LINE profile photo:', err.message);
+    }
+  }
+  return `https://ui-avatars.com/api/?name=${encodeURIComponent(fallbackName || 'YOKA')}&background=ffa929&color=0E121A&size=200&font-size=0.45`;
+}
+
 const app = express();
 
 // Safe body parser for Express & Vercel Serverless environment
@@ -95,7 +119,8 @@ async function handleEvent(event) {
   if (event.type === 'message' && event.message.type === 'image') {
     const session = userSessions.get(userId);
     if (session && session.step === 'AWAITING_PHOTO') {
-      session.data.avatarUrl = 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=400&q=80';
+      const realAvatar = await getLineProfilePic(userId, session.data.fullName);
+      session.data.avatarUrl = realAvatar;
       session.step = 'CONFIRMATION';
       userSessions.set(userId, session);
       saveSessions(userSessions);
@@ -139,6 +164,8 @@ async function handleEvent(event) {
       const country = parts[3] || 'ไทย';
       const province = parts[4] || 'กรุงเทพมหานคร';
 
+      const avatarUrl = await getLineProfilePic(userId, fullName);
+
       const newMember = addMemberStore({
         lineUserId: userId,
         username,
@@ -146,7 +173,7 @@ async function handleEvent(event) {
         phone,
         country,
         province,
-        avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80'
+        avatarUrl
       });
 
       userSessions.delete(userId);
@@ -163,7 +190,7 @@ async function handleEvent(event) {
     }
   }
 
-  // 3. Trigger to start new registration flow (Resets any stale session)
+  // 3. Trigger to start new registration flow
   if (
     lowerText === 'สมัครสมาชิก' ||
     lowerText === 'สมัคร' ||
@@ -228,7 +255,8 @@ async function handleEvent(event) {
       return sendReply(event, `✅ บันทึกสถานที่: ${country} (${province}) เรียบร้อยครับ\n\nขั้นตอนที่ 5/5:\nกรุณาส่ง รูปถ่าย ของคุณในแชทนี้\nหรือพิมพ์ "ใช้รูปโปรไฟล์" เพื่อใช้รูปจากบัญชี LINE ของคุณ`);
 
     } else if (session.step === 'AWAITING_PHOTO') {
-      session.data.avatarUrl = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80';
+      const realAvatar = await getLineProfilePic(userId, session.data.fullName);
+      session.data.avatarUrl = realAvatar;
       session.step = 'CONFIRMATION';
       userSessions.set(userId, session);
       saveSessions(userSessions);
@@ -246,6 +274,7 @@ async function handleEvent(event) {
 
     } else if (session.step === 'CONFIRMATION') {
       if (lowerText.includes('ยืนยัน') || lowerText.includes('confirm') || lowerText.includes('ok') || lowerText === 'yes') {
+        const realAvatar = await getLineProfilePic(userId, session.data.fullName);
         const newMember = addMemberStore({
           lineUserId: userId,
           username: session.data.username,
@@ -253,7 +282,7 @@ async function handleEvent(event) {
           phone: session.data.phone,
           country: session.data.country,
           province: session.data.province,
-          avatarUrl: session.data.avatarUrl
+          avatarUrl: realAvatar
         });
 
         userSessions.delete(userId);
