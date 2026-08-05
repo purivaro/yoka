@@ -9,8 +9,22 @@ const config = {
 
 const app = express();
 
-// Middleware to parse body as JSON
-app.use(express.json());
+// Middleware to safely handle body on both local Express and Vercel Serverless environment
+app.use((req, res, next) => {
+  if (req.body !== undefined) {
+    return next();
+  }
+  let data = '';
+  req.on('data', chunk => { data += chunk; });
+  req.on('end', () => {
+    try {
+      req.body = data ? JSON.parse(data) : {};
+    } catch (e) {
+      req.body = {};
+    }
+    next();
+  });
+});
 
 // GET endpoint to quickly check server health
 app.get('/api/webhook', (req, res) => {
