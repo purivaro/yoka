@@ -2,9 +2,15 @@
 node_modules/
 .gemini/
 
+# Environment variables & Vercel
+.env
+.env*.local
+.vercel
+
 # Playwright
 /test-results/
 /playwright-report/
 /blob-report/
 /playwright/.cache/
 /playwright/.auth/
+
